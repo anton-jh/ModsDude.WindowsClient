@@ -4,9 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModsDude.WindowsClient.Wpf"
+        xmlns:vm="clr-namespace:ModsDude.WindowsClient.ViewModel.ViewModels;assembly=ModsDude.WindowsClient.ViewModel"
+        xmlns:p="clr-namespace:ModsDude.WindowsClient.Wpf.Pages"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        Title="MainWindow" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
 
-    </Grid>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:LoginPageViewModel}">
+            <p:LoginPage />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Frame Content="{Binding Path=Page}"/>
 </Window>
