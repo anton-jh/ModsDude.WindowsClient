@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.ApiC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsDude.WindowsClient.Persistence", "ModsDude.WindowsClient.Persistence\ModsDude.WindowsClient.Persistence.csproj", "{943A244B-C2BA-45BB-BB95-8A6D9102086C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsDude.WindowsClient.Domain", "ModsDude.WindowsClient.Domain\ModsDude.WindowsClient.Domain.csproj", "{42F35F95-EAC0-43AF-8FEA-DEB8E1D48F1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{943A244B-C2BA-45BB-BB95-8A6D9102086C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{943A244B-C2BA-45BB-BB95-8A6D9102086C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{943A244B-C2BA-45BB-BB95-8A6D9102086C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42F35F95-EAC0-43AF-8FEA-DEB8E1D48F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42F35F95-EAC0-43AF-8FEA-DEB8E1D48F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42F35F95-EAC0-43AF-8FEA-DEB8E1D48F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42F35F95-EAC0-43AF-8FEA-DEB8E1D48F1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
