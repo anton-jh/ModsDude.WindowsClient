@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj" />
+    <ProjectReference Include="..\ModsDude.WindowsClient.Domain\ModsDude.WindowsClient.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

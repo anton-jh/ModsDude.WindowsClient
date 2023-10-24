@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "schema": [
+        "ModsDude.WindowsClient.ApiClient/schema.graphql"
+      ],
+      "documents": [
+        "ModsDude.WindowsClient.ApiClient/**/*.graphql"
+      ]
+    }
+  ]
+}
