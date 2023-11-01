@@ -1,13 +1,24 @@
-﻿using ModsDude.WindowsClient.ViewModel.Commands;
-using System.Security;
+﻿using ModsDude.WindowsClient.Application.Authentication;
+using ModsDude.WindowsClient.ViewModel.Commands;
 using System.Windows.Input;
 
 namespace ModsDude.WindowsClient.ViewModel.ViewModels;
 public class LoginPageViewModel : PageViewModel
 {
+    private readonly LoginService _loginService;
+
+
+    public LoginPageViewModel(LoginService loginService)
+    {
+        _loginService = loginService;
+
+        LoginCommand = new AsyncRelayCommand(Login);
+    }
+
     public LoginPageViewModel()
     {
-        LoginCommand = new RelayCommand(() => { });
+        _loginService = null!;
+        LoginCommand = null!;
     }
 
 
@@ -23,6 +34,7 @@ public class LoginPageViewModel : PageViewModel
     }
 
     private string _password = "";
+
     public string Password
     {
         get => _password;
@@ -34,4 +46,10 @@ public class LoginPageViewModel : PageViewModel
     }
 
     public ICommand LoginCommand { get; }
+
+
+    private Task Login()
+    {
+        return _loginService.Login();
+    }
 }

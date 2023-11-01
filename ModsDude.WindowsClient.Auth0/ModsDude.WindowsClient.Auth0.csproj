@@ -10,9 +10,4 @@
     <PackageReference Include="Auth0.OidcClient.WPF" Version="3.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj" />
-    <ProjectReference Include="..\ModsDude.WindowsClient.Domain\ModsDude.WindowsClient.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

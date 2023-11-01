@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ModsDude.WindowsClient.Application.Authentication;
 using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System;
@@ -40,6 +41,9 @@ public partial class App : System.Windows.Application
 
         services
             .AddTransient<LoginPageViewModelFactory>();
+
+        services
+            .AddTransient<LoginService>();
 
         services
             .AddModsDudeClient()
