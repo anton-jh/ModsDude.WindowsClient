@@ -15,16 +15,13 @@ internal class PipelineAssembler
         .ToDictionary(x => x.FunctionName);
 
 
-    public IPipelineConsumer<TIn, TReturn> Assemble<TIn, TReturn>(IEnumerable<PipelineFunctionDescriptor> descriptors)
+    public object Assemble(Type tIn, IEnumerable<PipelineFunctionDescriptor> descriptors)
     {
-        var next = new PipelineEnd<TReturn>();
-
         foreach (var function in descriptors.Reverse())
         {
             var metaData = _pipelineFunctions.GetValueOrDefault(function.FunctionName)
                 ?? throw new AssemblingException($"Invalid function type {function.FunctionName}");
 
-            var constructedType = metaData.FunctionType.MakeGenericType(metaData.GetTypeParameters<TIn, TReturn>().ToArray());
         }
 
         throw new NotImplementedException();
