@@ -3,7 +3,7 @@ using ModsDude.WindowsClient.Experiments.Adapters.Types;
 
 namespace ModsDude.WindowsClient.Experiments.Adapters.PipelineFunctions;
 
-internal class GetFilesInDirectory<TReturn> : PipelineFunction<object, IEnumerable<FileAbstraction>, TReturn>
+internal class GetFilesInDirectory<TReturn> : PipelineFunction<Unit, IEnumerable<FileAbstraction>, TReturn>
 {
     public GetFilesInDirectory(AdapterContext context, IPipelineConsumer<IEnumerable<FileAbstraction>, TReturn> next)
         : base(context, next)
@@ -11,7 +11,7 @@ internal class GetFilesInDirectory<TReturn> : PipelineFunction<object, IEnumerab
     }
 
 
-    public override async Task<TReturn> ExecuteAsync(object input)
+    public override async Task<TReturn> ExecuteAsync(Unit input)
     {
         var files = Enumerable.Empty<FileAbstraction>(); // Get files in folder specified in Context
 

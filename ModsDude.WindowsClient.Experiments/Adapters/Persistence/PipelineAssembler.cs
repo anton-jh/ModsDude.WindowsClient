@@ -1,96 +1,106 @@
-﻿using ModsDude.WindowsClient.Experiments.Adapters.PipelineFunctions;
-using ModsDude.WindowsClient.Experiments.Adapters.Types;
+﻿using ModsDude.WindowsClient.Experiments.Adapters.FileSystem;
+using ModsDude.WindowsClient.Experiments.Adapters.PipelineFunctions;
+using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ModsDude.WindowsClient.Experiments.Adapters.Persistence;
 
 internal class PipelineAssembler
 {
-    private static readonly Dictionary<string, PipelineFunctionMetaData> _pipelineFunctions =
-        typeof(PipelineFunctionMetaData)
-        .Assembly
-        .GetTypes()
-        .Where(x => x.IsAssignableTo(typeof(PipelineFunctionMetaData)) && x != typeof(PipelineFunctionMetaData))
-        .Select(x => (PipelineFunctionMetaData?)Activator.CreateInstance(x))
-        .OfType<PipelineFunctionMetaData>()
-        .ToDictionary(x => x.FunctionName);
-
-
     public object Assemble(Type tIn, IEnumerable<PipelineFunctionDescriptor> descriptors)
     {
-        foreach (var function in descriptors.Reverse())
-        {
-            var metaData = _pipelineFunctions.GetValueOrDefault(function.FunctionName)
-                ?? throw new AssemblingException($"Invalid function type {function.FunctionName}");
+        var first = descriptors.FirstOrDefault();
+        var rest = descriptors.Skip(1);
 
+        if (first is null)
+        {
+            throw new NotImplementedException();
+        }
+
+        var ns = typeof(CreateModInfo<,>).Namespace;
+        var type = Type.GetType(ns + "." + first.FunctionName)
+            ?? throw new AssemblingException("Cannot find type");
+
+        foreach (var typeParam in type.GetGenericArguments())
+        {
+            // check TIn
+            var baseTIn = type.BaseType!.GetGenericArguments().First();
+
+            
+        }
+
+        var type2 = typeof(MapList<,,>);
+
+        // this seems to work!
+        var fromTIn = FindTypeParamInTIn(type2.GetGenericArguments()[0], type2.BaseType!.GetGenericArguments()[0], typeof(List<FileAbstraction>));
+        // TODO: if the previous fails, go looking in all pipeline properties' TReturns
+
+        return new { };
+    }
+
+
+    private Type? FindTypeParamInTIn(Type typeParam, Type baseTIn, Type actualTIn)
+    {
+        if (baseTIn == typeParam)
+        {
+            return actualTIn;
+        }
+
+        if (baseTIn.ContainsGenericParameters == false)
+        {
+            return null;
+        }
+
+        // this will allways throw because baseTIn is not a closed type
+        //if (actualTIn.IsAssignableTo(baseTIn) == false)
+        //{
+        //    throw new AssemblingException("Invalid input type");
+        //}
+
+        foreach (var innerTypeParam in baseTIn.GetGenericArguments())
+        {
+            if (innerTypeParam == typeParam)
+            {
+                var alignedActualTIn = AlignWithTypeDefinition(actualTIn, baseTIn);
+                if (alignedActualTIn is null)
+                {
+                    // could not find typeParam in baseTIn
+                    return null;
+                }
+
+                return alignedActualTIn.GetGenericArguments()[innerTypeParam.GenericParameterPosition];
+            }
         }
 
         throw new NotImplementedException();
     }
-}
 
-
-internal abstract class PipelineFunctionMetaData
-{
-    public PipelineFunctionMetaData(Type type)
+    private Type? AlignWithTypeDefinition(Type type, Type target)
     {
-        FunctionName = type.Name;
-        FunctionType = type;
-    }
+        if (type.IsGenericType && (type.GetGenericTypeDefinition() == target.GetGenericTypeDefinition()))
+        {
+            return type;
+        }
 
+        var interfaces = type.GetInterfaces();
 
-    public string FunctionName { get; }
-    public Type FunctionType { get; }
+        foreach (var iface in interfaces)
+        {
+            var alignedWithInterface = AlignWithTypeDefinition(iface, target);
+            if (alignedWithInterface is not null)
+            {
+                return alignedWithInterface;
+            }
+        }
 
+        if (type.BaseType is null)
+        {
+            return null;
+        }
 
-    public abstract IEnumerable<Type> GetTypeParameters<TIn, TReturn>();
-}
-
-
-internal class CreateModInfoMetaData : PipelineFunctionMetaData
-{
-    public CreateModInfoMetaData() : base(typeof(CreateModInfo<,>))
-    {
-    }
-
-    public override IEnumerable<Type> GetTypeParameters<TIn, TReturn>()
-    {
-        yield return typeof(TIn);
-        yield return typeof(TReturn);
+        return AlignWithTypeDefinition(type.BaseType, target);
     }
 }
 
-internal class GetFilenameMetaData : PipelineFunctionMetaData
-{
-    public GetFilenameMetaData() : base(typeof(GetFilename<>))
-    {
-    }
 
-    public override IEnumerable<Type> GetTypeParameters<TIn, TReturn>()
-    {
-        yield return typeof(TReturn);
-    }
-}
-
-internal class GetFilesInDirectoryMetaData : PipelineFunctionMetaData
-{
-    public GetFilesInDirectoryMetaData() : base(typeof(GetFilesInDirectory<>))
-    {
-    }
-
-    public override IEnumerable<Type> GetTypeParameters<TIn, TReturn>()
-    {
-        yield return typeof(TReturn);
-    }
-}
-
-internal class MapListMetaData : PipelineFunctionMetaData
-{
-    public MapListMetaData() : base(typeof(MapList<,,>))
-    {
-    }
-
-    public override IEnumerable<Type> GetTypeParameters<TIn, TReturn>()
-    {
-        yield break;
-    }
-}
+// https://learn.microsoft.com/en-us/dotnet/api/system.type.getgenericarguments?view=net-7.0

@@ -2,9 +2,7 @@
 using ModsDude.WindowsClient.Experiments.Adapters.Persistence;
 using ModsDude.WindowsClient.Experiments.Adapters.PipelineFunctions;
 using ModsDude.WindowsClient.Experiments.Adapters.Types;
-using System.Reflection;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace ModsDude.WindowsClient.Experiments.Adapters;
 
@@ -44,10 +42,10 @@ internal static class AdaptersTest
                 modFileMapper
             );
 
-        IPipelineConsumer<object, IEnumerable<ModInfo>> getMods = getModFiles;
+        IPipelineConsumer<Unit, IEnumerable<ModInfo>> getMods = getModFiles;
             
 
-        await getMods.ExecuteAsync(new { });
+        await getMods.ExecuteAsync(Unit.Instance);
 
 
 
@@ -66,18 +64,19 @@ internal static class AdaptersTest
         Console.WriteLine(json);
 
 
-        //var assembled = new PipelineAssembler().Assemble<Unit, IEnumerable<ModInfo>>(description);
+        //var functionName = description.First().FunctionName;
+        //var namespaceName = typeof(CreateModInfo<,>).Namespace;
+        //var type = Type.GetType(namespaceName + "." + functionName)!;
+        //var constructed = type.MakeGenericType(typeof(FileAbstraction));
 
-        var functionName = description.First().FunctionName;
-        var namespaceName = typeof(CreateModInfo<,>).Namespace;
-        var type = Type.GetType(namespaceName + "." + functionName)!;
-        var constructed = type.MakeGenericType(typeof(FileAbstraction));
+        
 
+        var assembled = new PipelineAssembler().Assemble(typeof(Unit), description);
     }
 }
 
 //type.BaseType.GetGenericArguments()
 //{System.Type[3]}
-    //[0]: { Name = "Object" FullName = "System.Object"}
+//[0]: { Name = "Object" FullName = "System.Object"}
 //[1]: { Name = "IEnumerable`1" FullName = "System.Collections.Generic.IEnumerable`1[[ModsDude.WindowsClient.Experiments.Adapters.FileSystem.FileAbstraction, ModsDude.WindowsClient.Experiments, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"}
 //[2]: { Name = "TReturn" FullName = null}
