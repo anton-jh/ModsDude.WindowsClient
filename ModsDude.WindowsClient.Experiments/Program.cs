@@ -6,6 +6,29 @@
 
 
 
-using ModsDude.WindowsClient.Experiments.Adapters;
+//using ModsDude.WindowsClient.Experiments.Adapters;
+using MoonSharp.Interpreter;
 
-await AdaptersTest.Run();
+//await AdaptersTest.Run();
+
+
+double MoonSharpFactorial()
+{
+    string scriptCode = @"    
+		-- defines a factorial function
+		function fact (n)
+			if (n == 0) then
+				return 1
+			else
+				return n*fact(n - 1)
+			end
+		end";
+
+    var script = new Script();
+    script.DoString(scriptCode);
+    var res = script.Call(script.Globals["fact"], 4);
+    return res.Number;
+}
+
+
+Console.WriteLine(MoonSharpFactorial());
