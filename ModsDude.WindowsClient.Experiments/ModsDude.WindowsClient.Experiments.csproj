@@ -4,15 +4,23 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\farmsim.lua" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\farmsim.lua" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MoonSharp" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj" />
-    <ProjectReference Include="..\ModsDude.WindowsClient.Domain\ModsDude.WindowsClient.Domain.csproj" />
+    <ProjectReference Include="..\ModsDude.WindowsClient.Application\ModsDude.WindowsClient.Application.csproj" />
   </ItemGroup>
 
 </Project>
