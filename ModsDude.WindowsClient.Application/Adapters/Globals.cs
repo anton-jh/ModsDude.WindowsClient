@@ -4,13 +4,14 @@ using MoonSharp.Interpreter;
 namespace ModsDude.WindowsClient.Application.Adapters;
 internal static class Globals
 {
-    public static string Config => "config";
+    public static string Variables => "variables";
     public static string GetAllMods => "getAllMods";
 
 
     public static void ValidateScript(Script script)
     {
         ValidateGlobal(script, GetAllMods, DataType.Function);
+        ValidateGlobal(script, Variables, DataType.Table, optional: true);
     }
 
 

@@ -11,6 +11,6 @@ var adapter = new Adapter(scriptReader.ReadToEnd());
 (adapter.Config.Variables.First() as FolderPathConfigVariable)!.Value = new(@"C:\Users\anton\Documents\My Games\FarmingSimulator2022");
 
 
-adapter.GetAllMods();
+var mods = adapter.GetAllMods();
 
 Console.WriteLine();

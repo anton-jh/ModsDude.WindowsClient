@@ -1,18 +1,27 @@
-folder = config.folderPath("Folder path")
+vars = {
+    modsFolder = config.folderPath("Mods folder"),
+	savegamesFolder = config.folderPath("Savegames folder")
+}
 
 
 local function createModInfo(file)
-    return mod.__new(file.name, "A mod", "1", file)
+    local modDescStream = zip.read(file).get("modDesc.xml").open()
+    local document = xml.read(modDescStream)
+
+    local name = document.get("/modDesc/title/en")
+    local version = document.get("/modDesc/version")
+
+    return mod.__new(file.name, name, version, file)
 end
 
 
 function getAllMods()
-	local files = fs.getFilesInFolder(folder.value .. "mods")
-	local mods = {}
+    local files = fs.getFilesInFolder(modsFolder.value)
+    local mods = {}
 
-	for _, file in ipairs(files) do
-		table.insert(mods, createModInfo(file))
-	end
+    for _, file in ipairs(files) do
+        table.insert(mods, createModInfo(file))
+    end
 
-	return mods
+    return mods
 end
