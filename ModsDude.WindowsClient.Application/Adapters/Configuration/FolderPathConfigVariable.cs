@@ -4,8 +4,11 @@ using MoonSharp.Interpreter;
 namespace ModsDude.WindowsClient.Application.Adapters.Configuration;
 
 [MoonSharpUserData]
-public class FolderPathConfigVariable(string displayName)
-    : ConfigVariable(displayName)
+public class FolderPathConfigVariable(string displayName, bool required)
+    : ConfigVariable(displayName, required)
 {
-    public AllowedPath? Value { get; [MoonSharpHidden] set; }
+    public void SetValue(DirectoryInfo value)
+    {
+        Value = new AllowedPath(value.FullName);
+    }
 }

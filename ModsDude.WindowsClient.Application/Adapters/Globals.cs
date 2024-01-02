@@ -4,7 +4,7 @@ using MoonSharp.Interpreter;
 namespace ModsDude.WindowsClient.Application.Adapters;
 internal static class Globals
 {
-    public static string Variables => "variables";
+    public static string Variables => "vars";
     public static string GetAllMods => "getAllMods";
 
 

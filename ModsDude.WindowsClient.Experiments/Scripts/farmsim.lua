@@ -16,7 +16,7 @@ end
 
 
 function getAllMods()
-    local files = fs.getFilesInFolder(modsFolder.value)
+    local files = fs.getFilesInFolder(vars.modsFolder.value)
     local mods = {}
 
     for _, file in ipairs(files) do

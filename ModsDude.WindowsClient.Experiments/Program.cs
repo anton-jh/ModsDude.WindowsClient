@@ -6,10 +6,14 @@ using System.Reflection;
 using var scriptStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ModsDude.WindowsClient.Experiments.Scripts.farmsim.lua");
 using var scriptReader = new StreamReader(scriptStream!);
 
-var adapter = new Adapter(scriptReader.ReadToEnd());
+var initializer = new AdapterInitializer(scriptReader.ReadToEnd());
 
-(adapter.Config.Variables.First() as FolderPathConfigVariable)!.Value = new(@"C:\Users\anton\Documents\My Games\FarmingSimulator2022");
+var variables = initializer.GetVariables();
 
+(variables["modsFolder"] as FolderPathConfigVariable)!.SetValue(new DirectoryInfo(@"C:\Users\anton\Documents\My Games\FarmingSimulator2022\mods"));
+(variables["savegamesFolder"] as FolderPathConfigVariable)!.SetValue(new DirectoryInfo(@"C:\Users\anton\Documents\My Games\FarmingSimulator2022"));
+
+var adapter = initializer.Initialize(variables);
 
 var mods = adapter.GetAllMods();
 
