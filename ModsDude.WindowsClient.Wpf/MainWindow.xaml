@@ -12,8 +12,8 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:LoginPageViewModel}">
-            <p:LoginPage />
+        <DataTemplate DataType="{x:Type vm:StartPageViewModel}">
+            <p:StartPage />
         </DataTemplate>
     </Window.Resources>
 

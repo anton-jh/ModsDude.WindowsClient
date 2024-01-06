@@ -1,26 +1,16 @@
 ﻿using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 
 namespace ModsDude.WindowsClient.ViewModel.ViewModels;
-public class MainWindowViewModel : ViewModel
+public class MainWindowViewModel(StartPageViewModelFactory startPageViewModelFactory)
+    : ViewModel
 {
-    private readonly LoginPageViewModelFactory _loginPageViewModelFactory;
-
-
-    public MainWindowViewModel(LoginPageViewModelFactory loginPageViewModelFactory)
-    {
-        _loginPageViewModelFactory = loginPageViewModelFactory;
-
-        _page = _loginPageViewModelFactory.Create();
-    }
-
     public MainWindowViewModel()
+        : this(new StartPageViewModelFactory())
     {
-        _loginPageViewModelFactory = null!;
-        _page = new LoginPageViewModel();
     }
 
 
-    private PageViewModel _page;
+    private PageViewModel _page = startPageViewModelFactory.Create();
     public PageViewModel Page
     {
         get => _page;

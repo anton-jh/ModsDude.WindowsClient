@@ -40,7 +40,7 @@ public partial class App : System.Windows.Application
             .AddTransient<MainWindowViewModel>();
 
         services
-            .AddTransient<LoginPageViewModelFactory>();
+            .AddTransient<StartPageViewModelFactory>();
 
         services
             .AddTransient<LoginService>();
