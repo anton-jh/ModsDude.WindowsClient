@@ -1,7 +1,7 @@
-﻿using ModsDude.WindowsClient.Application.Adapters.Exceptions;
+﻿using ModsDude.WindowsClient.Domain.Adapters.Exceptions;
 using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters;
+namespace ModsDude.WindowsClient.Domain.Adapters;
 internal static class Globals
 {
     public static string Variables => "vars";

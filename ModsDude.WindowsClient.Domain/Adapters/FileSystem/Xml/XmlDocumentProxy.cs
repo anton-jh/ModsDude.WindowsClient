@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace ModsDude.WindowsClient.Application.Adapters.FileSystem.Xml;
+namespace ModsDude.WindowsClient.Domain.Adapters.FileSystem.Xml;
 public class XmlDocumentProxy(XmlDocument document)
 {
     public string? Get(string xpath)

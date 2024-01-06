@@ -1,6 +1,6 @@
 ﻿using System.IO.Compression;
 
-namespace ModsDude.WindowsClient.Application.Adapters.FileSystem.ZipFiles;
+namespace ModsDude.WindowsClient.Domain.Adapters.FileSystem.ZipFiles;
 public class ZipArchiveProxy(ZipArchive archive)
 {
     public ZipArchiveEntry? Get(string path)

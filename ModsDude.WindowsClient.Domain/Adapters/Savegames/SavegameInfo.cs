@@ -1,6 +1,6 @@
 ﻿using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters.Savegames;
+namespace ModsDude.WindowsClient.Domain.Adapters.Savegames;
 
 [MoonSharpUserData]
 public class SavegameInfo

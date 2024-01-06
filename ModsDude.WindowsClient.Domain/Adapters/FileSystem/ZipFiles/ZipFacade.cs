@@ -1,7 +1,8 @@
-﻿using MoonSharp.Interpreter;
+﻿using ModsDude.WindowsClient.Domain.Adapters;
+using MoonSharp.Interpreter;
 using System.IO.Compression;
 
-namespace ModsDude.WindowsClient.Application.Adapters.FileSystem.ZipFiles;
+namespace ModsDude.WindowsClient.Domain.Adapters.FileSystem.ZipFiles;
 
 [MoonSharpUserData]
 public static class ZipFacade

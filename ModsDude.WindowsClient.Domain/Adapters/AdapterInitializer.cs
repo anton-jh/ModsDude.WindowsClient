@@ -1,14 +1,14 @@
-﻿using ModsDude.WindowsClient.Application.Adapters.Configuration;
-using ModsDude.WindowsClient.Application.Adapters.Exceptions;
-using ModsDude.WindowsClient.Application.Adapters.FileSystem;
-using ModsDude.WindowsClient.Application.Adapters.FileSystem.Xml;
-using ModsDude.WindowsClient.Application.Adapters.FileSystem.ZipFiles;
-using ModsDude.WindowsClient.Application.Adapters.Mods;
+﻿using ModsDude.WindowsClient.Domain.Adapters.Configuration;
+using ModsDude.WindowsClient.Domain.Adapters.Exceptions;
+using ModsDude.WindowsClient.Domain.Adapters.FileSystem;
+using ModsDude.WindowsClient.Domain.Adapters.FileSystem.Xml;
+using ModsDude.WindowsClient.Domain.Adapters.FileSystem.ZipFiles;
+using ModsDude.WindowsClient.Domain.Adapters.Mods;
 using MoonSharp.Interpreter;
 using System.IO.Compression;
 using System.Xml;
 
-namespace ModsDude.WindowsClient.Application.Adapters;
+namespace ModsDude.WindowsClient.Domain.Adapters;
 public class AdapterInitializer
 {
     private static bool _setupComplete = false;

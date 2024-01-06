@@ -1,7 +1,7 @@
 ﻿using MoonSharp.Interpreter;
 using System.IO.Compression;
 
-namespace ModsDude.WindowsClient.Application.Adapters.FileSystem.ZipFiles;
+namespace ModsDude.WindowsClient.Domain.Adapters.FileSystem.ZipFiles;
 public class ZipArchiveEntryProxy(ZipArchiveEntry entry)
 {
     public string Name => entry.Name;

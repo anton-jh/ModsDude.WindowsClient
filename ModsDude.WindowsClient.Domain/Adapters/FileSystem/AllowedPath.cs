@@ -1,6 +1,6 @@
 ﻿using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters.FileSystem;
+namespace ModsDude.WindowsClient.Domain.Adapters.FileSystem;
 
 [MoonSharpUserData]
 public class AllowedPath(string upperLimit, string? value = null)

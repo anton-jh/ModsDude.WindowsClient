@@ -1,4 +1,4 @@
-﻿namespace ModsDude.WindowsClient.Application.Adapters.Exceptions;
+﻿namespace ModsDude.WindowsClient.Domain.Adapters.Exceptions;
 public class InvalidAdapterException(string devMessage)
     : Exception(devMessage)
 {

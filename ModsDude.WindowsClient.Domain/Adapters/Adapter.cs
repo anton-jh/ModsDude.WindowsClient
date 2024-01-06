@@ -1,7 +1,7 @@
-﻿using ModsDude.WindowsClient.Application.Adapters.Configuration;
+﻿using ModsDude.WindowsClient.Domain.Adapters.Configuration;
 using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters;
+namespace ModsDude.WindowsClient.Domain.Adapters;
 public class Adapter
 {
     private readonly Script _script;
@@ -27,3 +27,6 @@ public class Adapter
         return new(_script);
     }
 }
+
+// todo: create this from a string, same as AdapterInitializer
+// this is for actually using the adapter and the initializer is just for getting the config variables from the script

@@ -1,6 +1,6 @@
 ﻿using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters;
+namespace ModsDude.WindowsClient.Domain.Adapters;
 public static class ScriptDisposableExtensions
 {
     private static Dictionary<Script, List<IDisposable>> _disposableLists = [];

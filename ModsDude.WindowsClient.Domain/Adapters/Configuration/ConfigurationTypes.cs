@@ -1,6 +1,6 @@
 ﻿using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters.Configuration;
+namespace ModsDude.WindowsClient.Domain.Adapters.Configuration;
 
 [MoonSharpUserData]
 public static class ConfigurationTypes

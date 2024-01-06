@@ -1,6 +1,6 @@
 ﻿using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters.Configuration;
+namespace ModsDude.WindowsClient.Domain.Adapters.Configuration;
 
 [MoonSharpUserData]
 public abstract class ConfigVariable(string displayName, string? description, bool required)

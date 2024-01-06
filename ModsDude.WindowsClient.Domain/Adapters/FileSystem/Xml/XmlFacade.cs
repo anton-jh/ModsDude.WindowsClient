@@ -1,7 +1,7 @@
 ﻿using MoonSharp.Interpreter;
 using System.Xml;
 
-namespace ModsDude.WindowsClient.Application.Adapters.FileSystem.Xml;
+namespace ModsDude.WindowsClient.Domain.Adapters.FileSystem.Xml;
 
 [MoonSharpUserData]
 public static class XmlFacade

@@ -1,6 +1,6 @@
 ﻿using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters.Mods;
+namespace ModsDude.WindowsClient.Domain.Adapters.Mods;
 
 [MoonSharpUserData]
 public class ModInfo

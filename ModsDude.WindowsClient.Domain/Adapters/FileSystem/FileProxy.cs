@@ -1,4 +1,4 @@
-﻿namespace ModsDude.WindowsClient.Application.Adapters.FileSystem;
+﻿namespace ModsDude.WindowsClient.Domain.Adapters.FileSystem;
 
 public class FileProxy(FileInfo fileInfo)
 {

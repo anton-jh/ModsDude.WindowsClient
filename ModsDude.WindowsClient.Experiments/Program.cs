@@ -1,5 +1,5 @@
-﻿using ModsDude.WindowsClient.Application.Adapters;
-using ModsDude.WindowsClient.Application.Adapters.Configuration;
+﻿using ModsDude.WindowsClient.Domain.Adapters;
+using ModsDude.WindowsClient.Domain.Adapters.Configuration;
 using System.Reflection;
 
 

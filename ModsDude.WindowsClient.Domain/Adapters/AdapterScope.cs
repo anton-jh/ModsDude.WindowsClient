@@ -1,8 +1,8 @@
-﻿using ModsDude.WindowsClient.Application.Adapters.Exceptions;
-using ModsDude.WindowsClient.Application.Adapters.Mods;
+﻿using ModsDude.WindowsClient.Domain.Adapters.Exceptions;
+using ModsDude.WindowsClient.Domain.Adapters.Mods;
 using MoonSharp.Interpreter;
 
-namespace ModsDude.WindowsClient.Application.Adapters;
+namespace ModsDude.WindowsClient.Domain.Adapters;
 public class AdapterScope(Script script) : IDisposable
 {
     public void Dispose()
