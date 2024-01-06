@@ -1,6 +1,4 @@
 ﻿using ModsDude.WindowsClient.Application.Adapters.Configuration;
-using ModsDude.WindowsClient.Application.Adapters.Exceptions;
-using ModsDude.WindowsClient.Application.Adapters.Mods;
 using MoonSharp.Interpreter;
 
 namespace ModsDude.WindowsClient.Application.Adapters;
@@ -24,30 +22,8 @@ public class Adapter
     }
 
 
-    public List<ModInfo> GetAllMods()
+    public AdapterScope CreateScope()
     {
-        var function = _script.Globals.Get(Globals.GetAllMods);
-        var result = _script.Call(function);
-
-        if (result.Type is not DataType.Table)
-        {
-            throw InvalidAdapterException.ReturnType(Globals.GetAllMods);
-        }
-
-        var mods = result.Table.Values
-            .Select(x =>
-            {
-                if (x.Type is DataType.UserData && x.UserData.Object is ModInfo mod)
-                {
-                    return mod;
-                }
-
-                throw InvalidAdapterException.ReturnType(Globals.GetAllMods);
-            })
-            .ToList();
-
-        _script.DisposeTracked();
-
-        return mods;
+        return new(_script);
     }
 }

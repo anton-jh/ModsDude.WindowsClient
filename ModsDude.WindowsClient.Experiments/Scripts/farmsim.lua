@@ -8,10 +8,11 @@ local function createModInfo(file)
     local modDescStream = zip.read(file).get("modDesc.xml").open()
     local document = xml.read(modDescStream)
 
-    local name = document.get("/modDesc/title/en")
     local version = document.get("/modDesc/version")
+    local name = document.get("/modDesc/title/en")
+	local description = document.get("/modDesc/description/en")
 
-    return mod.__new(file.name, name, version, file)
+    return mod.fromFile(file.name, version, name, description, file)
 end
 
 
