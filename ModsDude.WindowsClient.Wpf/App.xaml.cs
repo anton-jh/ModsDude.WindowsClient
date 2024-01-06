@@ -27,9 +27,10 @@ public partial class App : System.Windows.Application
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        var window = _serviceProvider.GetRequiredService<MainWindow>();
+        _serviceProvider.GetRequiredService<LoginService>().Login();
 
-        window.Show();
+        //var window = _serviceProvider.GetRequiredService<MainWindow>();
+        //window.Show();
     }
 
 
