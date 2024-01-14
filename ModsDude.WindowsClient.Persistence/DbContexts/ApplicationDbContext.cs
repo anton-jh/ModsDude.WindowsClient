@@ -1,14 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ModsDude.WindowsClient.Persistence.Entities;
 
 namespace ModsDude.WindowsClient.Persistence.DbContexts;
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions options)
+    : DbContext(options)
 {
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var innerPath = "ModsDude/db.sqlite";
-        var dbFullPath = Path.Combine(localAppDataPath, innerPath);
-
-        optionsBuilder.UseSqlite($"DataSource={dbFullPath}");
-    }
+    public required DbSet<RefreshTokenEntity> RefreshTokens { get; init; }
 }

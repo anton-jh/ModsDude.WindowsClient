@@ -1,17 +1,27 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using ModsDude.WindowsClient.Application;
 using ModsDude.WindowsClient.Application.Authentication;
+using ModsDude.WindowsClient.Domain.LocalUsers;
+using ModsDude.WindowsClient.Persistence.DbContexts;
+using ModsDude.WindowsClient.Persistence.Repositories;
 using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 
 namespace ModsDude.WindowsClient.Wpf;
 public partial class App : System.Windows.Application
 {
-    private IServiceProvider? _serviceProvider;
-    private IConfiguration? _configuration;
+    private const string _dbFilename = "db.sqlite";
+
+
+    private IServiceProvider _serviceProvider = null!;
+    private IConfiguration _configuration = null!;
 
 
     protected override void OnStartup(StartupEventArgs e)
@@ -27,27 +37,56 @@ public partial class App : System.Windows.Application
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
-        _serviceProvider.GetRequiredService<LoginService>().Login();
+        var window = _serviceProvider.GetRequiredService<MainWindow>();
+        window.Show();
 
-        //var window = _serviceProvider.GetRequiredService<MainWindow>();
-        //window.Show();
+        MigrateDatabase();
+        Login();
     }
 
 
-    private void ConfigureServices(IServiceCollection services)
+    private void MigrateDatabase()
     {
-        services
-            .AddTransient<MainWindow>()
-            .AddTransient<MainWindowViewModel>();
+        var dbContext = _serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-        services
-            .AddTransient<StartPageViewModelFactory>();
+        Directory.CreateDirectory(GetDbDirectory());
 
-        services
-            .AddTransient<LoginService>();
+        dbContext.Database.Migrate();
+    }
 
-        services
-            .AddModsDudeClient()
+    private async void Login()
+    {
+        await _serviceProvider.GetRequiredService<LoginService>().Login();
+    }
+
+
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddTransient<MainWindow>();
+        services.AddTransient<MainWindowViewModel>();
+
+        services.AddTransient<StartPageViewModelFactory>();
+
+        services.AddTransient<LoginService>();
+
+        services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            options.UseSqlite($"DataSource={Path.Combine(GetDbDirectory(), _dbFilename)}");
+        }, ServiceLifetime.Transient);
+
+        services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
+
+        services.AddModsDudeClient()
             .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:7035/graphql"));
+
+        services.AddMediatR(config => config.RegisterServicesFromAssemblies(
+            typeof(ApplicationAssemblyMarker).Assembly));
+    }
+
+    private static string GetDbDirectory()
+    {
+        var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+        return Path.Combine(localAppDataPath, "ModsDude");
     }
 }
