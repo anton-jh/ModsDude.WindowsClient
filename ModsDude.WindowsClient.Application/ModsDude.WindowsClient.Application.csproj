@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj" />
     <ProjectReference Include="..\ModsDude.WindowsClient.Domain\ModsDude.WindowsClient.Domain.csproj" />
   </ItemGroup>
 

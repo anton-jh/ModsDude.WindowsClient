@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.View
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.Application", "ModsDude.WindowsClient.Application\ModsDude.WindowsClient.Application.csproj", "{850B5C02-E8C1-4BAA-B2BB-187769210A87}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.ApiClient", "ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj", "{D4C54D5F-B1DA-49E7-B721-39233C6B624A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.Persistence", "ModsDude.WindowsClient.Persistence\ModsDude.WindowsClient.Persistence.csproj", "{943A244B-C2BA-45BB-BB95-8A6D9102086C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.Domain", "ModsDude.WindowsClient.Domain\ModsDude.WindowsClient.Domain.csproj", "{42F35F95-EAC0-43AF-8FEA-DEB8E1D48F1F}"
@@ -33,10 +31,6 @@ Global
 		{850B5C02-E8C1-4BAA-B2BB-187769210A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{850B5C02-E8C1-4BAA-B2BB-187769210A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{850B5C02-E8C1-4BAA-B2BB-187769210A87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4C54D5F-B1DA-49E7-B721-39233C6B624A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4C54D5F-B1DA-49E7-B721-39233C6B624A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4C54D5F-B1DA-49E7-B721-39233C6B624A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4C54D5F-B1DA-49E7-B721-39233C6B624A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{943A244B-C2BA-45BB-BB95-8A6D9102086C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{943A244B-C2BA-45BB-BB95-8A6D9102086C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{943A244B-C2BA-45BB-BB95-8A6D9102086C}.Release|Any CPU.ActiveCfg = Release|Any CPU
