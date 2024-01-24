@@ -25,6 +25,7 @@ public class LoginService
 
     public async Task Login()
     {
+        await _client.LogoutAsync();
         var loginResult = await _client.LoginAsync(new
         {
             audience = "api.modsdude.com"
