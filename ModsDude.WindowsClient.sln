@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.Wpf", "ModsDude.WindowsClient.Wpf\ModsDude.WindowsClient.Wpf.csproj", "{5CA2CCB0-2844-4DE9-A0C2-C54CFDB5DF5C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.ViewModel", "ModsDude.WindowsClient.ViewModel\ModsDude.WindowsClient.ViewModel.csproj", "{B7E5BA5B-DBD5-4AE7-BAD6-38EB0D7CB074}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.Application", "ModsDude.WindowsClient.Application\ModsDude.WindowsClient.Application.csproj", "{850B5C02-E8C1-4BAA-B2BB-187769210A87}"
@@ -13,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.Pers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.Domain", "ModsDude.WindowsClient.Domain\ModsDude.WindowsClient.Domain.csproj", "{42F35F95-EAC0-43AF-8FEA-DEB8E1D48F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsDude.WindowsClient.ApiClient", "ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj", "{3641931A-16FE-48F3-9C61-AF963BEC7675}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsDude.WindowsClient.ApiClient", "ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj", "{3641931A-16FE-48F3-9C61-AF963BEC7675}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5CA2CCB0-2844-4DE9-A0C2-C54CFDB5DF5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CA2CCB0-2844-4DE9-A0C2-C54CFDB5DF5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CA2CCB0-2844-4DE9-A0C2-C54CFDB5DF5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CA2CCB0-2844-4DE9-A0C2-C54CFDB5DF5C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7E5BA5B-DBD5-4AE7-BAD6-38EB0D7CB074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7E5BA5B-DBD5-4AE7-BAD6-38EB0D7CB074}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7E5BA5B-DBD5-4AE7-BAD6-38EB0D7CB074}.Release|Any CPU.ActiveCfg = Release|Any CPU
