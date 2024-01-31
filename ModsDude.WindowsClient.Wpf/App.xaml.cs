@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using ModsDude.WindowsClient.ApiClient;
 using ModsDude.WindowsClient.Application;
 using ModsDude.WindowsClient.Application.Authentication;
 using ModsDude.WindowsClient.Domain.LocalUsers;
@@ -10,7 +10,6 @@ using ModsDude.WindowsClient.Persistence.Repositories;
 using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 
@@ -76,8 +75,7 @@ public partial class App : System.Windows.Application
 
         services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
 
-        services.AddModsDudeClient()
-            .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:7035/graphql"));
+        services.AddModsDudeClient();
 
         services.AddMediatR(config => config.RegisterServicesFromAssemblies(
             typeof(ApplicationAssemblyMarker).Assembly));
