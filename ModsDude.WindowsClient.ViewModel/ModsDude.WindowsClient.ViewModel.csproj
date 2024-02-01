@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ModsDude.WindowsClient.Application\ModsDude.WindowsClient.Application.csproj" />
-  </ItemGroup>
-
 </Project>

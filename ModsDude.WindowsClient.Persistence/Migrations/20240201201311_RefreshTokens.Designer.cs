@@ -10,7 +10,7 @@ using ModsDude.WindowsClient.Persistence.DbContexts;
 namespace ModsDude.WindowsClient.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240113154058_RefreshTokens")]
+    [Migration("20240201201311_RefreshTokens")]
     partial class RefreshTokens
     {
         /// <inheritdoc />
@@ -19,12 +19,12 @@ namespace ModsDude.WindowsClient.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
-            modelBuilder.Entity("ModsDude.WindowsClient.Persistence.Entities.RefreshTokenEntity", b =>
+            modelBuilder.Entity("ModsDude.WindowsClient.Persistence.Entities.RefreshToken", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("RefreshToken")
+                    b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

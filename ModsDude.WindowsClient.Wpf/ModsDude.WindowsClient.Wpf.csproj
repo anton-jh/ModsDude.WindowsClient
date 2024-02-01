@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj" />
+    <ProjectReference Include="..\ModsDude.WindowsClient.Model\ModsDude.WindowsClient.Model.csproj" />
     <ProjectReference Include="..\ModsDude.WindowsClient.Persistence\ModsDude.WindowsClient.Persistence.csproj" />
     <ProjectReference Include="..\ModsDude.WindowsClient.ViewModel\ModsDude.WindowsClient.ViewModel.csproj" />
   </ItemGroup>

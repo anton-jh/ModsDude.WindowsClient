@@ -1,4 +1,4 @@
-﻿namespace ModsDude.WindowsClient.Application.Exceptions;
+﻿namespace ModsDude.WindowsClient.Model.Exceptions;
 public class GraphqlNullDataException : Exception
 {
     public GraphqlNullDataException()

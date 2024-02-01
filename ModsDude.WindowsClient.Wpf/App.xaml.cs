@@ -2,11 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.ApiClient;
-using ModsDude.WindowsClient.Application;
-using ModsDude.WindowsClient.Application.Authentication;
-using ModsDude.WindowsClient.Domain.LocalUsers;
+using ModsDude.WindowsClient.Model.Services;
 using ModsDude.WindowsClient.Persistence.DbContexts;
-using ModsDude.WindowsClient.Persistence.Repositories;
 using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System;
@@ -14,11 +11,8 @@ using System.IO;
 using System.Windows;
 
 namespace ModsDude.WindowsClient.Wpf;
-public partial class App : System.Windows.Application
+public partial class App : Application
 {
-    private const string _dbFilename = "db.sqlite";
-
-
     private IServiceProvider _serviceProvider = null!;
     private IConfiguration _configuration = null!;
 
@@ -48,7 +42,7 @@ public partial class App : System.Windows.Application
     {
         var dbContext = _serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-        Directory.CreateDirectory(GetDbDirectory());
+        Directory.CreateDirectory(ApplicationDbContext.GetDbDirectory());
 
         dbContext.Database.Migrate();
     }
@@ -68,23 +62,8 @@ public partial class App : System.Windows.Application
 
         services.AddTransient<LoginService>();
 
-        services.AddDbContext<ApplicationDbContext>(options =>
-        {
-            options.UseSqlite($"DataSource={Path.Combine(GetDbDirectory(), _dbFilename)}");
-        }, ServiceLifetime.Transient);
-
-        services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Transient);
 
         services.AddModsDudeClient();
-
-        services.AddMediatR(config => config.RegisterServicesFromAssemblies(
-            typeof(ApplicationAssemblyMarker).Assembly));
-    }
-
-    private static string GetDbDirectory()
-    {
-        var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
-        return Path.Combine(localAppDataPath, "ModsDude");
     }
 }

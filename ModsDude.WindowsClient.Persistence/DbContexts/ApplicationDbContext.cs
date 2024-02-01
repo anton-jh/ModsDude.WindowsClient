@@ -2,8 +2,25 @@
 using ModsDude.WindowsClient.Persistence.Entities;
 
 namespace ModsDude.WindowsClient.Persistence.DbContexts;
-public class ApplicationDbContext(DbContextOptions options)
-    : DbContext(options)
+public class ApplicationDbContext
+    : DbContext
 {
-    public required DbSet<RefreshTokenEntity> RefreshTokens { get; init; }
+    private const string _dbFilename = "db.sqlite";
+
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite($"DataSource={Path.Combine(GetDbDirectory(), _dbFilename)}");
+    }
+
+
+    public required DbSet<RefreshToken> RefreshTokens { get; init; }
+
+
+    public static string GetDbDirectory()
+    {
+        var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+        return Path.Combine(localAppDataPath, "ModsDude");
+    }
 }
