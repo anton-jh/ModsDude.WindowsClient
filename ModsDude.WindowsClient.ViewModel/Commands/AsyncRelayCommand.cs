@@ -1,17 +1,9 @@
 ﻿using System.Windows.Input;
 
 namespace ModsDude.WindowsClient.ViewModel.Commands;
-public class AsyncRelayCommand : ICommand
+public class AsyncRelayCommand(Func<Task> action)
+    : ICommand
 {
-    private readonly Func<Task> _action;
-
-
-    public AsyncRelayCommand(Func<Task> action)
-    {
-        _action = action;
-    }
-
-
     public event EventHandler? CanExecuteChanged;
 
 
@@ -28,11 +20,17 @@ public class AsyncRelayCommand : ICommand
     {
         try
         {
-            await _action();
+            await action();
         }
         catch (Exception ex)
         {
-            ErrorHandlerDelegate?.Invoke(ex);
+            if (ErrorHandlerDelegate is not null)
+            {
+                ErrorHandlerDelegate.Invoke(ex);
+                return;
+            }
+
+            throw;
         }
     }
 
