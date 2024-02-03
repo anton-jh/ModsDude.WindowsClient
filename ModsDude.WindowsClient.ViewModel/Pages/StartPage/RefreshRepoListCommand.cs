@@ -3,34 +3,30 @@ using ModsDude.WindowsClient.Model.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace ModsDude.WindowsClient.ViewModel.ViewModels.Commands;
+namespace ModsDude.WindowsClient.ViewModel.Pages.StartPage;
 public class RefreshRepoListCommand(
     RepoService repoService,
     ObservableCollection<StartPageRepoViewModel> list,
     Action<Exception> errorHandler)
     : ICommand
 {
-    private bool _loading = false;
-    private CancellationToken _cancellationToken;
+    private bool _canExecute = true;
 
 
     public event EventHandler? CanExecuteChanged;
 
 
-    public bool CanExecute(object? parameter)
-    {
-        return _loading == false;
-    }
+    public bool CanExecute(object? parameter) => _canExecute;
 
     public async void Execute(object? parameter)
     {
-        _loading = true;
+        SetCanExecute(false);
 
         IEnumerable<CombinedRepo> repos;
 
         try
         {
-            repos = await repoService.GetRepos(_cancellationToken);
+            repos = await repoService.GetRepos(default);
         }
         catch (Exception ex)
         {
@@ -48,6 +44,13 @@ public class RefreshRepoListCommand(
             });
         }
 
-        _loading = false;
+        SetCanExecute(true);
+    }
+
+
+    private void SetCanExecute(bool canExecute)
+    {
+        _canExecute = canExecute;
+        CanExecuteChanged?.Invoke(this, new EventArgs());
     }
 }

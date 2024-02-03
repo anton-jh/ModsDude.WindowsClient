@@ -1,4 +1,4 @@
-﻿using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
+﻿using ModsDude.WindowsClient.ViewModel.Pages.StartPage;
 
 namespace ModsDude.WindowsClient.ViewModel.ViewModels;
 public class MainWindowViewModel(StartPageViewModelFactory startPageViewModelFactory)

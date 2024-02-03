@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.ApiClient;
 using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Services;
-using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
+using ModsDude.WindowsClient.ViewModel.Pages.StartPage;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System;
 using System.IO;

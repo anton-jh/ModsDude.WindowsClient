@@ -1,9 +1,9 @@
 ﻿using ModsDude.WindowsClient.Model.Services;
-using ModsDude.WindowsClient.ViewModel.ViewModels.Commands;
+using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace ModsDude.WindowsClient.ViewModel.ViewModels;
+namespace ModsDude.WindowsClient.ViewModel.Pages.StartPage;
 public class StartPageViewModel : PageViewModel
 {
     private readonly RepoService _repoService;
@@ -28,10 +28,4 @@ public class StartPageViewModel : PageViewModel
     {
         throw exception;
     }
-}
-
-
-public class StartPageRepoViewModel
-{
-    public required string Name { get; init; }
 }

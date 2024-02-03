@@ -1,7 +1,6 @@
 ﻿using ModsDude.WindowsClient.Model.Services;
-using ModsDude.WindowsClient.ViewModel.ViewModels;
 
-namespace ModsDude.WindowsClient.ViewModel.ViewModelFactories;
+namespace ModsDude.WindowsClient.ViewModel.Pages.StartPage;
 public class StartPageViewModelFactory(
     RepoService repoService)
 {
