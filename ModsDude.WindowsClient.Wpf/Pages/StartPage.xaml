@@ -5,10 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ModsDude.WindowsClient.Wpf.Pages"
       xmlns:vm="clr-namespace:ModsDude.WindowsClient.ViewModel.ViewModels;assembly=ModsDude.WindowsClient.ViewModel"
+      xmlns:page="clr-namespace:ModsDude.WindowsClient.ViewModel.Pages.StartPage;assembly=ModsDude.WindowsClient.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      d:DataContext="{d:DesignInstance Type=vm:StartPageViewModel, IsDesignTimeCreatable=True}"
-      Title="StartPage">
+      d:DataContext="{d:DesignInstance Type=page:StartPageViewModel, IsDesignTimeCreatable=True}"
+      Title="StartPage"
+      FontSize="16">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -25,13 +27,16 @@
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button Content="Refresh" Command="{Binding Path=RefreshCommand}"/>
             </StackPanel>
-            <ListView ItemsSource="{Binding Path=Repos}">
+            <ListView ItemsSource="{Binding Path=Repos}" SelectedItem="{Binding Path=SelectedRepo}" SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="vm:LocalInstanceViewModel">
                         <TextBlock Text="{Binding Path=Name}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Edit" Command="{Binding Path=EditRepoCommand}" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

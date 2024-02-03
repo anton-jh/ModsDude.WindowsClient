@@ -1,15 +1,7 @@
-﻿using ModsDude.WindowsClient.ViewModel.Pages.StartPage;
-
-namespace ModsDude.WindowsClient.ViewModel.ViewModels;
-public class MainWindowViewModel(StartPageViewModelFactory startPageViewModelFactory)
+﻿namespace ModsDude.WindowsClient.ViewModel.ViewModels;
+public class MainWindowViewModel
     : ViewModel
 {
-    public MainWindowViewModel()
-        : this(null!)
-    {
-    }
-
-
     private PageViewModel _page = new LoginPageViewModel();
     public PageViewModel Page
     {
@@ -19,11 +11,5 @@ public class MainWindowViewModel(StartPageViewModelFactory startPageViewModelFac
             _page = value;
             OnPropertyChanged();
         }
-    }
-
-
-    public void NavigateToStartPage()
-    {
-        Page = startPageViewModelFactory.Create();
     }
 }

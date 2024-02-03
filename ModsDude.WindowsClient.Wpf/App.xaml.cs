@@ -4,7 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.ApiClient;
 using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Services;
+using ModsDude.WindowsClient.Utilities.GenericFactories;
+using ModsDude.WindowsClient.ViewModel.Pages.EditRepoPage;
 using ModsDude.WindowsClient.ViewModel.Pages.StartPage;
+using ModsDude.WindowsClient.ViewModel.Services;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System;
 using System.IO;
@@ -15,7 +18,6 @@ public partial class App : Application
 {
     private IServiceProvider _serviceProvider = null!;
     private IConfiguration _configuration = null!;
-    private MainWindowViewModel _mainWindowViewModel = null!;
 
 
     protected override void OnStartup(StartupEventArgs e)
@@ -32,7 +34,6 @@ public partial class App : Application
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
         var window = _serviceProvider.GetRequiredService<MainWindow>();
-        _mainWindowViewModel = (MainWindowViewModel)window.DataContext;
         window.Show();
 
         MigrateDatabase();
@@ -52,16 +53,22 @@ public partial class App : Application
     private async void Login()
     {
         await _serviceProvider.GetRequiredService<Session>().Login();
-        _mainWindowViewModel.NavigateToStartPage();
+
+        var startPageViewModel = _serviceProvider.GetRequiredService<StartPageViewModel>();
+        _serviceProvider.GetRequiredService<NavigationService>().Navigate(startPageViewModel);
     }
 
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddTransient<MainWindow>();
-        services.AddTransient<MainWindowViewModel>();
+        services.AddSingleton<MainWindow>();
+        services.AddSingleton<MainWindowViewModel>();
 
-        services.AddTransient<StartPageViewModelFactory>();
+        services.AddFactory<StartPageViewModel>();
+        services.AddTransient<RepoViewModelBuilder>();
+        services.AddTransient<EditRepoPageViewModelFactory>();
+
+        services.AddSingleton<NavigationService>();
 
         services.AddSingleton<Session>();
         services.AddSingleton<RepoService>();

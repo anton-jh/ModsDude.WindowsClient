@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ModsDude.WindowsClient.Model\ModsDude.WindowsClient.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModelFactories\" />
+    <ProjectReference Include="..\ModsDude.WindowsClient.Utilities\ModsDude.WindowsClient.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

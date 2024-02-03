@@ -6,8 +6,9 @@ using System.Windows.Input;
 namespace ModsDude.WindowsClient.ViewModel.Pages.StartPage;
 public class RefreshRepoListCommand(
     RepoService repoService,
-    ObservableCollection<StartPageRepoViewModel> list,
-    Action<Exception> errorHandler)
+    ObservableCollection<RepoViewModel> list,
+    Action<Exception> errorHandler,
+    RepoViewModelBuilder repoViewModelBuilder)
     : ICommand
 {
     private bool _canExecute = true;
@@ -38,10 +39,7 @@ public class RefreshRepoListCommand(
 
         foreach (var repo in repos)
         {
-            list.Add(new()
-            {
-                Name = repo.Name
-            });
+            list.Add(repoViewModelBuilder.Build(repo));
         }
 
         SetCanExecute(true);

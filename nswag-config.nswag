@@ -10,8 +10,8 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": null,
-      "configurationClass": null,
+      "clientBaseClass": "ModsDudeClientBase",
+      "configurationClass": "Session",
       "generateClientClasses": true,
       "suppressClientClassesOutput": false,
       "generateClientInterfaces": true,
@@ -25,7 +25,7 @@
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "System.Net.Http.HttpClient",
-      "useHttpRequestMessageCreationMethod": false,
+      "useHttpRequestMessageCreationMethod": true,
       "useBaseUrl": true,
       "generateBaseUrlProperty": true,
       "generateSyncMethods": false,
@@ -88,7 +88,7 @@
       "inlineNamedTuples": true,
       "inlineNamedAny": false,
       "generateDtoTypes": true,
-      "generateOptionalPropertiesAsNullable": true,
+      "generateOptionalPropertiesAsNullable": false,
       "generateNullableReferenceTypes": true,
       "templateDirectory": null,
       "serviceHost": null,
