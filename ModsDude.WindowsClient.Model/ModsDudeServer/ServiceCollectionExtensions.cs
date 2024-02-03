@@ -6,7 +6,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddModsDudeClient(this IServiceCollection services)
     {
-        services.AddTransient<RepoClient>();
+        services.AddHttpClient<IRepoClient, RepoClient>();
 
         return services;
     }

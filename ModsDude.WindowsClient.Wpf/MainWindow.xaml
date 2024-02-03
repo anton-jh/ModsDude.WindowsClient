@@ -12,10 +12,13 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:LoginPageViewModel}">
+            <p:LoginPage />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:StartPageViewModel}">
             <p:StartPage />
         </DataTemplate>
     </Window.Resources>
 
-    <Frame Content="{Binding Path=Page}"/>
+    <Frame Content="{Binding Path=Page}" NavigationUIVisibility="Hidden"/>
 </Window>

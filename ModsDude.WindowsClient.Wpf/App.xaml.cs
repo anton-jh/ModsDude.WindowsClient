@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.ApiClient;
+using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Services;
-using ModsDude.WindowsClient.Persistence.DbContexts;
 using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System;
@@ -15,6 +15,7 @@ public partial class App : Application
 {
     private IServiceProvider _serviceProvider = null!;
     private IConfiguration _configuration = null!;
+    private MainWindowViewModel _mainWindowViewModel = null!;
 
 
     protected override void OnStartup(StartupEventArgs e)
@@ -31,6 +32,7 @@ public partial class App : Application
         _serviceProvider = serviceCollection.BuildServiceProvider();
 
         var window = _serviceProvider.GetRequiredService<MainWindow>();
+        _mainWindowViewModel = (MainWindowViewModel)window.DataContext;
         window.Show();
 
         MigrateDatabase();
@@ -49,7 +51,8 @@ public partial class App : Application
 
     private async void Login()
     {
-        await _serviceProvider.GetRequiredService<LoginService>().Login();
+        await _serviceProvider.GetRequiredService<Session>().Login();
+        _mainWindowViewModel.NavigateToStartPage();
     }
 
 
@@ -60,7 +63,8 @@ public partial class App : Application
 
         services.AddTransient<StartPageViewModelFactory>();
 
-        services.AddTransient<LoginService>();
+        services.AddSingleton<Session>();
+        services.AddSingleton<RepoService>();
 
         services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Transient);
 

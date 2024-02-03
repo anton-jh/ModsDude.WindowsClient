@@ -20,13 +20,18 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ListView Grid.Column="1" Grid.Row="1"
-                  ItemsSource="{Binding Path=Instances}">
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="vm:LocalInstanceViewModel">
-                    <TextBlock Text="{Binding Path=Name}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackPanel Grid.Column="1" Grid.Row="1"
+                    Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button Content="Refresh" Command="{Binding Path=RefreshCommand}"/>
+            </StackPanel>
+            <ListView ItemsSource="{Binding Path=Repos}">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="vm:LocalInstanceViewModel">
+                        <TextBlock Text="{Binding Path=Name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
     </Grid>
 </Page>

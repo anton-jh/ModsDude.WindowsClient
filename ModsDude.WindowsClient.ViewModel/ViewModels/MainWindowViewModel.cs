@@ -5,12 +5,12 @@ public class MainWindowViewModel(StartPageViewModelFactory startPageViewModelFac
     : ViewModel
 {
     public MainWindowViewModel()
-        : this(new StartPageViewModelFactory())
+        : this(null!)
     {
     }
 
 
-    private PageViewModel _page = startPageViewModelFactory.Create();
+    private PageViewModel _page = new LoginPageViewModel();
     public PageViewModel Page
     {
         get => _page;
@@ -19,5 +19,11 @@ public class MainWindowViewModel(StartPageViewModelFactory startPageViewModelFac
             _page = value;
             OnPropertyChanged();
         }
+    }
+
+
+    public void NavigateToStartPage()
+    {
+        Page = startPageViewModelFactory.Create();
     }
 }

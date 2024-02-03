@@ -14,13 +14,12 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModsDude.WindowsClient.ApiClient\ModsDude.WindowsClient.ApiClient.csproj" />
     <ProjectReference Include="..\ModsDude.WindowsClient.Model\ModsDude.WindowsClient.Model.csproj" />
-    <ProjectReference Include="..\ModsDude.WindowsClient.Persistence\ModsDude.WindowsClient.Persistence.csproj" />
     <ProjectReference Include="..\ModsDude.WindowsClient.ViewModel\ModsDude.WindowsClient.ViewModel.csproj" />
   </ItemGroup>
 

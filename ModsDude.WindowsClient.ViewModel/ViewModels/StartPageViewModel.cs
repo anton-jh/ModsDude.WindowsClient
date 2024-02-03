@@ -1,22 +1,37 @@
-﻿using System.Collections.ObjectModel;
+﻿using ModsDude.WindowsClient.Model.Services;
+using ModsDude.WindowsClient.ViewModel.ViewModels.Commands;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace ModsDude.WindowsClient.ViewModel.ViewModels;
-public class StartPageViewModel
-    : PageViewModel
+public class StartPageViewModel : PageViewModel
 {
-    public StartPageViewModel()
+    private readonly RepoService _repoService;
+
+
+    public StartPageViewModel(
+        RepoService repoService)
     {
-        Instances = [
-            new("test 1")
-        ];
+        _repoService = repoService;
+
+        RefreshCommand = new RefreshRepoListCommand(repoService, Repos, ThrowAsyncException);
     }
 
 
-    public ObservableCollection<LocalInstanceViewModel> Instances { get; }
+    public ObservableCollection<StartPageRepoViewModel> Repos { get; } = [];
+
+    public ICommand RefreshCommand { get; private set; }
+
+
+
+    private static void ThrowAsyncException(Exception exception)
+    {
+        throw exception;
+    }
 }
 
 
-public class LocalInstanceViewModel(string name)
+public class StartPageRepoViewModel
 {
-    public string Name { get; } = name;
+    public required string Name { get; init; }
 }

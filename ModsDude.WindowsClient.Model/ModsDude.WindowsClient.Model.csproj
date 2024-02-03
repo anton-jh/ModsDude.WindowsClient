@@ -8,10 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="Auth0.OidcClient.WPF" Version="4.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModsDude.WindowsClient.Persistence\ModsDude.WindowsClient.Persistence.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
