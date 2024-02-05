@@ -16,7 +16,28 @@
             <Label Content="{Binding Path=Text}" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:RepoPageViewModel}">
-            <Label Content="{Binding Path=Name}" />
+            <!-- Split this to separate file somehow -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <DockPanel Grid.Column="0">
+                    <ListView DockPanel.Dock="Top"
+                              ItemsSource="{Binding Path=MenuItems}" SelectionMode="Single"
+                              SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Path=Title}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DockPanel>
+
+                <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
+
+            </Grid>
         </DataTemplate>
     </Window.Resources>
 
