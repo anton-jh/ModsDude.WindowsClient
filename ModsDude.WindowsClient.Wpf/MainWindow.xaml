@@ -25,5 +25,6 @@
         </DataTemplate>
     </Window.Resources>
 
-    <Frame Content="{Binding Path=Page}" NavigationUIVisibility="Hidden"/>
+    <Frame Content="{Binding Path=Page}" NavigationUIVisibility="Hidden"
+           Margin="10"/>
 </Window>

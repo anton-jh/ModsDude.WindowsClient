@@ -508,8 +508,11 @@ namespace ModsDude.WindowsClient.ApiClient.Generated
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("serializedAdapter", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SerializedAdapter { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("modAdapter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ModAdapter { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("savegameAdapter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? SavegameAdapter { get; set; } = default!;
 
     }
 
@@ -519,8 +522,11 @@ namespace ModsDude.WindowsClient.ApiClient.Generated
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("serializedAdapter", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SerializedAdapter { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("modAdapterScript", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ModAdapterScript { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("savegameAdapterScript", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? SavegameAdapterScript { get; set; } = default!;
 
     }
 

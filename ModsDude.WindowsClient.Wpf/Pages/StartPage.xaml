@@ -18,25 +18,35 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" Grid.Row="1"
-                    Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                <Button Content="Refresh" Command="{Binding Path=RefreshCommand}"/>
-            </StackPanel>
-            <ListView ItemsSource="{Binding Path=Repos}" SelectedItem="{Binding Path=SelectedRepo}" SelectionMode="Single">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="vm:LocalInstanceViewModel">
-                        <TextBlock Text="{Binding Path=Name}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Edit" Command="{Binding Path=EditRepoCommand}" />
-            </StackPanel>
-        </StackPanel>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Button Content="Refresh" Command="{Binding Path=RefreshCommand}"/>
+        </Grid>
+
+        <ItemsControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                      ItemsSource="{Binding Path=Repos}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="vm:LocalInstanceViewModel">
+                    <Border Margin="0 5 0 5" Cursor="Hand"
+                            BorderBrush="Gray" BorderThickness="1">
+                        <Border.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Manage" />
+                                <MenuItem Header="Leave" />
+                                <Separator />
+                                <MenuItem Header="Delete" />
+                            </ContextMenu>
+                        </Border.ContextMenu>
+                        <Label Grid.Column="0"
+                               Content="{Binding Path=Name}" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Page>
