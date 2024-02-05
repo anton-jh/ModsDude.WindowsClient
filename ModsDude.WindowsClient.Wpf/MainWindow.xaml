@@ -5,26 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModsDude.WindowsClient.Wpf"
         xmlns:vm="clr-namespace:ModsDude.WindowsClient.ViewModel.ViewModels;assembly=ModsDude.WindowsClient.ViewModel"
-        xmlns:startPage="clr-namespace:ModsDude.WindowsClient.ViewModel.Pages.StartPage;assembly=ModsDude.WindowsClient.ViewModel"
-        xmlns:editRepoPage="clr-namespace:ModsDude.WindowsClient.ViewModel.Pages.EditRepoPage;assembly=ModsDude.WindowsClient.ViewModel"
-        xmlns:p="clr-namespace:ModsDude.WindowsClient.Wpf.Pages"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
-        Title="MainWindow" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="900" Width="1600"
+        WindowStartupLocation="CenterScreen"
+        FontSize="16">
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:LoginPageViewModel}">
-            <p:LoginPage />
+        <DataTemplate DataType="{x:Type vm:ExamplePageViewModel}">
+            <Label Content="{Binding Path=Text}" />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type startPage:StartPageViewModel}">
-            <p:StartPage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type editRepoPage:EditRepoPageViewModel}">
-            <p:EditRepoPage />
+        <DataTemplate DataType="{x:Type vm:RepoPageViewModel}">
+            <Label Content="{Binding Path=Name}" />
         </DataTemplate>
     </Window.Resources>
 
-    <Frame Content="{Binding Path=Page}" NavigationUIVisibility="Hidden"
-           Margin="10"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0">
+            <ListView DockPanel.Dock="Top"
+                      ItemsSource="{Binding Path=MenuItems}" SelectionMode="Single"
+                      SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Path=Title}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            <ListView DockPanel.Dock="Top"
+                      ItemsSource="{Binding Path=Repos}" SelectionMode="Single"
+                      SelectedItem="{Binding Path=SelectedRepo, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Path=Name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </DockPanel>
+
+        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
+
+    </Grid>
 </Window>

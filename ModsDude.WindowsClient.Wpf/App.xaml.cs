@@ -4,10 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.ApiClient;
 using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Services;
-using ModsDude.WindowsClient.Utilities.GenericFactories;
-using ModsDude.WindowsClient.ViewModel.Pages.EditRepoPage;
-using ModsDude.WindowsClient.ViewModel.Pages.StartPage;
-using ModsDude.WindowsClient.ViewModel.Services;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System;
 using System.IO;
@@ -36,8 +32,8 @@ public partial class App : Application
         var window = _serviceProvider.GetRequiredService<MainWindow>();
         window.Show();
 
-        MigrateDatabase();
-        Login();
+        //MigrateDatabase();
+        //Login();
     }
 
 
@@ -54,8 +50,7 @@ public partial class App : Application
     {
         await _serviceProvider.GetRequiredService<Session>().Login();
 
-        var startPageViewModel = _serviceProvider.GetRequiredService<StartPageViewModel>();
-        _serviceProvider.GetRequiredService<NavigationService>().Navigate(startPageViewModel);
+        // todo
     }
 
 
@@ -63,12 +58,6 @@ public partial class App : Application
     {
         services.AddSingleton<MainWindow>();
         services.AddSingleton<MainWindowViewModel>();
-
-        services.AddFactory<StartPageViewModel>();
-        services.AddTransient<RepoViewModelBuilder>();
-        services.AddTransient<EditRepoPageViewModelFactory>();
-
-        services.AddSingleton<NavigationService>();
 
         services.AddSingleton<Session>();
         services.AddSingleton<RepoService>();
