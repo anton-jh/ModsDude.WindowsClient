@@ -4,72 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModsDude.WindowsClient.Wpf"
-        xmlns:vm="clr-namespace:ModsDude.WindowsClient.ViewModel.ViewModels;assembly=ModsDude.WindowsClient.ViewModel"
+        xmlns:wvm="clr-namespace:ModsDude.WindowsClient.ViewModel.Windows;assembly=ModsDude.WindowsClient.ViewModel"
+        xmlns:pvm="clr-namespace:ModsDude.WindowsClient.ViewModel.Pages;assembly=ModsDude.WindowsClient.ViewModel"
+        xmlns:p="clr-namespace:ModsDude.WindowsClient.Wpf.Pages"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=wvm:MainWindowViewModel, IsDesignTimeCreatable=True}"
         Title="MainWindow" Height="900" Width="1600"
         WindowStartupLocation="CenterScreen"
         FontSize="16">
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:ExamplePageViewModel}">
-            <Label Content="{Binding Path=Text}" />
+        <DataTemplate DataType="{x:Type pvm:MainPageViewModel}">
+            <p:MainPage />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:RepoPageViewModel}">
-            <!-- Split this to separate file somehow -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <DockPanel Grid.Column="0">
-                    <ListView DockPanel.Dock="Top"
-                              ItemsSource="{Binding Path=MenuItems}" SelectionMode="Single"
-                              SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Label Content="{Binding Path=Title}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </DockPanel>
-
-                <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
-
-            </Grid>
+        <DataTemplate DataType="{x:Type pvm:RepoPageViewModel}">
+            <p:RepoPage />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type pvm:ExamplePageViewModel}">
+            <p:ExamplePage />
         </DataTemplate>
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <DockPanel Grid.Column="0">
-            <ListView DockPanel.Dock="Top"
-                      ItemsSource="{Binding Path=MenuItems}" SelectionMode="Single"
-                      SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding Path=Title}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
-            <ListView DockPanel.Dock="Top"
-                      ItemsSource="{Binding Path=Repos}" SelectionMode="Single"
-                      SelectedItem="{Binding Path=SelectedRepo, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding Path=Name}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </DockPanel>
-
-        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
-
-    </Grid>
+    <Frame Content="{Binding Path=CurrentPage}" NavigationUIVisibility="Hidden" />
 </Window>

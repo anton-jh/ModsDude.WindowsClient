@@ -1,4 +1,4 @@
-﻿using ModsDude.WindowsClient.ViewModel.ViewModels;
+﻿using ModsDude.WindowsClient.ViewModel.Windows;
 using System.Windows;
 
 namespace ModsDude.WindowsClient.Wpf;

@@ -1,14 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using ModsDude.WindowsClient.Model.Models;
+﻿using ModsDude.WindowsClient.Model.Models;
+using ModsDude.WindowsClient.ViewModel.Pages;
 
 namespace ModsDude.WindowsClient.ViewModel.ViewModels;
-public partial class RepoItemViewModel(
-    CombinedRepo combinedRepo)
-    : ObservableObject
+public class RepoItemViewModel(CombinedRepo repo)
+    : IMenuItemViewModel
 {
-    [ObservableProperty]
-    private string _name = combinedRepo.Name;
+    public string Title => repo.Name;
 
-
-    internal CombinedRepo Repo { get; } = combinedRepo;
+    public PageViewModel GetPage()
+    {
+        return new RepoPageViewModel(repo);
+    }
 }
