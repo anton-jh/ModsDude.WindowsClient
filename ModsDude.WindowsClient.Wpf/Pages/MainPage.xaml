@@ -32,7 +32,8 @@
 
             <ListView DockPanel.Dock="Top"
                       ItemsSource="{Binding Path=Repos}" SelectionMode="Single"
-                      SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}">
+                      SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}"
+                      ScrollViewer.CanContentScroll="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Label Content="{Binding Path=Title}" />

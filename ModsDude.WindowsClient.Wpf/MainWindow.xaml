@@ -9,7 +9,7 @@
         xmlns:p="clr-namespace:ModsDude.WindowsClient.Wpf.Pages"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=wvm:MainWindowViewModel, IsDesignTimeCreatable=True}"
-        Title="MainWindow" Height="900" Width="1600"
+        Title="MainWindow" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
         FontSize="16">
 

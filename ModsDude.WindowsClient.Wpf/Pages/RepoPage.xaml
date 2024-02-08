@@ -34,8 +34,9 @@
                 </ListView.ItemTemplate>
             </ListView>
             <ListView Grid.Row="1"
-                  ItemsSource="{Binding Path=Profiles}" SelectionMode="Single"
-                  SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}">
+                      ItemsSource="{Binding Path=Profiles}" SelectionMode="Single"
+                      SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}"
+                      ScrollViewer.CanContentScroll="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Label Content="{Binding Path=Title}" />

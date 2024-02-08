@@ -2,6 +2,7 @@
 using ModsDude.WindowsClient.Model.Models;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModsDude.WindowsClient.ViewModel.Pages;
 public partial class RepoPageViewModel
@@ -10,15 +11,20 @@ public partial class RepoPageViewModel
     private readonly CombinedRepo _repo;
 
 
+    public RepoPageViewModel()
+    {
+        _repo = null!;
+        _name = "Test repo 123";
+
+        CreateMenu();
+        _selectedMenuItem = MenuItems.First();
+    }
     public RepoPageViewModel(CombinedRepo repo)
     {
         _repo = repo;
         _name = repo.Name;
 
-        MenuItems = [
-            new MenuItemViewModel("Overview", new ExamplePageViewModel($"Repo overview ({repo.Name})")),
-            new MenuItemViewModel("Setup", new ExamplePageViewModel($"Setup repo ({repo.Name})"))
-        ];
+        CreateMenu();
         _selectedMenuItem = MenuItems.First();
     }
 
@@ -46,7 +52,7 @@ public partial class RepoPageViewModel
 
     public PageViewModel CurrentPage => SelectedMenuItem.GetPage();
 
-    public ObservableCollection<IMenuItemViewModel> MenuItems { get; }
+    public ObservableCollection<IMenuItemViewModel> MenuItems { get; private set; }
 
     public ObservableCollection<IMenuItemViewModel> Instances { get; } = [
         new MenuItemViewModel("Game", new ExamplePageViewModel("Instance (Game)")),
@@ -61,6 +67,24 @@ public partial class RepoPageViewModel
         new MenuItemViewModel("Profile 5", new ExamplePageViewModel("Profile 5")),
         new MenuItemViewModel("Profile 6", new ExamplePageViewModel("Profile 6")),
         new MenuItemViewModel("Profile 7", new ExamplePageViewModel("Profile 7")),
-        new MenuItemViewModel("Profile 8", new ExamplePageViewModel("Profile 8"))
+        new MenuItemViewModel("Profile 8", new ExamplePageViewModel("Profile 8")),
+        new MenuItemViewModel("Profile 9", new ExamplePageViewModel("Profile 9")),
+        new MenuItemViewModel("Profile 10", new ExamplePageViewModel("Profile 10")),
+        new MenuItemViewModel("Profile 11", new ExamplePageViewModel("Profile 11")),
+        new MenuItemViewModel("Profile 12", new ExamplePageViewModel("Profile 12")),
+        new MenuItemViewModel("Profile 13", new ExamplePageViewModel("Profile 13")),
+        new MenuItemViewModel("Profile 14", new ExamplePageViewModel("Profile 14")),
+        new MenuItemViewModel("Profile 15", new ExamplePageViewModel("Profile 15")),
+        new MenuItemViewModel("Profile 16", new ExamplePageViewModel("Profile 16")),
     ];
+
+
+    [MemberNotNull(nameof(MenuItems))]
+    private void CreateMenu()
+    {
+        MenuItems = [
+            new MenuItemViewModel("Overview", new ExamplePageViewModel($"Repo overview ({Name})")),
+            new MenuItemViewModel("Setup", new ExamplePageViewModel($"Setup repo ({Name})"))
+        ];
+    }
 }
