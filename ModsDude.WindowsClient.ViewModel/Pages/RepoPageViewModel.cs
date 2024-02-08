@@ -11,14 +11,6 @@ public partial class RepoPageViewModel
     private readonly CombinedRepo _repo;
 
 
-    public RepoPageViewModel()
-    {
-        _repo = null!;
-        _name = "Test repo 123";
-
-        CreateMenu();
-        _selectedMenuItem = MenuItems.First();
-    }
     public RepoPageViewModel(CombinedRepo repo)
     {
         _repo = repo;
