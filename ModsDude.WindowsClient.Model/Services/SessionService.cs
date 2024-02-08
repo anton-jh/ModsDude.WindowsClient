@@ -26,9 +26,28 @@ public class SessionService
     }
 
 
-    public Task<string> GetAccessToken()
+    public event EventHandler<bool>? LoggedInChanged;
+
+
+    public bool IsLoggedIn => _session is not null;
+
+
+    public async Task<string> GetAccessToken(CancellationToken cancellationToken)
     {
-        // TODO
+        if (_session is null)
+        {
+            throw new InvalidOperationException("Not logged in");
+        }
+
+        var refreshSuccess = await RefreshIfNeeded(_session, cancellationToken);
+        if (refreshSuccess)
+        {
+            return _session.AccessToken;
+        }
+
+        _session = null;
+        LoggedInChanged?.Invoke(this, false);
+        throw new Exception("Something went wrong, try logging in again");
     }
 
     public async Task Init(CancellationToken cancellationToken)
@@ -37,14 +56,23 @@ public class SessionService
 
         if (_session is not null)
         {
-            var refreshSuccess = await Refresh(_session, cancellationToken);
+            var refreshSuccess = await RefreshIfNeeded(_session, cancellationToken);
             if (refreshSuccess)
             {
+                LoggedInChanged?.Invoke(this, true);
                 return;
             }
         }
 
         _session = await Login(cancellationToken);
+        LoggedInChanged?.Invoke(this, true);
+    }
+
+    public void Logout()
+    {
+        ClearSession();
+        _session = null;
+        LoggedInChanged?.Invoke(this, false);
     }
 
 
@@ -71,8 +99,13 @@ public class SessionService
         };
     }
 
-    private async Task<bool> Refresh(Session session, CancellationToken cancellationToken)
+    private async Task<bool> RefreshIfNeeded(Session session, CancellationToken cancellationToken)
     {
+        if (session.Expires > DateTimeOffset.Now.AddSeconds(10))
+        {
+            return true;
+        }
+
         var refreshResult = await _authClient.RefreshTokenAsync(session.RefreshToken, cancellationToken);
 
         if (refreshResult.IsError)
@@ -85,6 +118,7 @@ public class SessionService
         session.Expires = refreshResult.AccessTokenExpiration;
 
         SaveSession(session);
+
         return true;
     }
 
@@ -109,5 +143,14 @@ public class SessionService
         var serializedSession = JsonSerializer.Serialize(session);
         
         File.WriteAllText(filepath, serializedSession);
+    }
+
+    private static void ClearSession()
+    {
+        var filepath = Path.Combine(FileSystemHelper.GetDbDirectory(), _sessionFilename);
+        if (File.Exists(filepath))
+        {
+            File.Delete(filepath);
+        }
     }
 }
