@@ -7,7 +7,7 @@ namespace ModsDude.WindowsClient.Model.Services;
 public class RepoService(
     IRepoClient repoClient,
     ApplicationDbContext dbContext,
-    Session session)
+    SessionOld session)
 {
     public async Task<IEnumerable<CombinedRepo>> GetRepos(CancellationToken cancellationToken)
     {

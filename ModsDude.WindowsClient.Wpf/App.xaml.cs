@@ -48,7 +48,7 @@ public partial class App : Application
 
     private async void Login()
     {
-        await _serviceProvider.GetRequiredService<Session>().Login();
+        await _serviceProvider.GetRequiredService<SessionOld>().Login();
 
         // todo
     }
@@ -59,7 +59,7 @@ public partial class App : Application
         services.AddSingleton<MainWindow>();
         services.AddSingleton<MainWindowViewModel>();
 
-        services.AddSingleton<Session>();
+        services.AddSingleton<SessionOld>();
         services.AddSingleton<RepoService>();
 
         services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Transient);

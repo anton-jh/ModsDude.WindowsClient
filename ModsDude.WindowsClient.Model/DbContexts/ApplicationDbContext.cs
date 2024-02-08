@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Models;
 
 namespace ModsDude.WindowsClient.Model.DbContexts;
@@ -8,9 +9,12 @@ public class ApplicationDbContext
     private const string _dbFilename = "db.sqlite";
 
 
+    public required DbSet<LocalInstance> LocalInstances { get; init; }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite($"DataSource={Path.Combine(GetDbDirectory(), _dbFilename)}");
+        optionsBuilder.UseSqlite($"DataSource={Path.Combine(FileSystemHelper.GetDbDirectory(), _dbFilename)}");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -18,17 +22,5 @@ public class ApplicationDbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-    }
-
-
-    public required DbSet<RefreshToken> RefreshTokens { get; init; }
-    public required DbSet<LocalInstance> LocalInstances { get; init; }
-
-
-    public static string GetDbDirectory()
-    {
-        var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
-        return Path.Combine(localAppDataPath, "ModsDude");
     }
 }

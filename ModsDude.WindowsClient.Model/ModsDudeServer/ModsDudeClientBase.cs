@@ -2,7 +2,7 @@
 
 namespace ModsDude.WindowsClient.Model.ModsDudeServer;
 public abstract class ModsDudeClientBase(
-    Session session)
+    SessionOld session)
 {
     protected Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
     {
