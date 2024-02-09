@@ -9,5 +9,8 @@ public class UserFriendlyException(
     public string DeveloperMessage { get; } = developerMessage ?? userMessage;
 
 
-    public static UserFriendlyException Unknown => new("Unknown error");
+    public static UserFriendlyException WrapUnknown(Exception exception)
+    {
+        return new UserFriendlyException("Something went wrong", exception.Message, exception);
+    }
 }

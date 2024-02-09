@@ -7,13 +7,13 @@ namespace ModsDude.WindowsClient.Model.Services;
 public class RepoService(
     IRepoClient repoClient,
     ApplicationDbContext dbContext,
-    SessionOld session)
+    SessionService sessionService)
 {
     public async Task<IEnumerable<CombinedRepo>> GetRepos(CancellationToken cancellationToken)
     {
         var repos = await repoClient.GetMyReposAsync(cancellationToken);
         var instances = await dbContext.LocalInstances
-            .Where(x => x.UserId == session.UserId)
+            .Where(x => x.UserId == sessionService.UserId)
             .ToListAsync(cancellationToken);
 
         var combinedRepos = repos.Select(x => new CombinedRepo()

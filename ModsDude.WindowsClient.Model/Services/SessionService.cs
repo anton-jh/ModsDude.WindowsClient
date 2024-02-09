@@ -1,5 +1,4 @@
 ﻿using Auth0.OidcClient;
-using Microsoft.EntityFrameworkCore;
 using ModsDude.WindowsClient.Model.Exceptions;
 using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Models;
@@ -20,7 +19,7 @@ public class SessionService
         {
             Domain = "modsdude-dev.eu.auth0.com",
             ClientId = "Hh7QKply1Ktxoq2Xv2mOicHp2VIWWAia",
-            Scope = "openid profile email offline_access create:repo"
+            Scope = "openid profile email offline_access create:repo",
         };
         _authClient = new Auth0Client(clientOptions);
         clientOptions.PostLogoutRedirectUri = clientOptions.RedirectUri;
@@ -31,6 +30,8 @@ public class SessionService
 
 
     public bool IsLoggedIn => _session is not null;
+    public string UserId => _session?.UserId
+        ?? throw new InvalidOperationException("Not logged in");
 
 
     public async Task<string> GetAccessToken(CancellationToken cancellationToken)
@@ -46,8 +47,7 @@ public class SessionService
             return _session.AccessToken;
         }
 
-        _session = null;
-        LoggedInChanged?.Invoke(this, false);
+        SetSession(null);
         throw new UserFriendlyException(
             "Something went wrong, try logging in again",
             "Refresh failed");
@@ -55,27 +55,31 @@ public class SessionService
 
     public async Task Init(CancellationToken cancellationToken)
     {
-        _session = LoadSession();
+        SetSession(LoadSession());
 
         if (_session is not null)
         {
             var refreshSuccess = await RefreshIfNeeded(_session, cancellationToken);
             if (refreshSuccess)
             {
-                LoggedInChanged?.Invoke(this, true);
                 return;
             }
         }
 
-        _session = await Login(cancellationToken);
-        LoggedInChanged?.Invoke(this, true);
+        SetSession(await Login(cancellationToken));
     }
 
-    public void Logout()
+    public async Task Logout(bool triggerLogin = true, CancellationToken cancellationToken = default)
     {
+        await _authClient.LogoutAsync(cancellationToken: cancellationToken);
+
         ClearSession();
-        _session = null;
-        LoggedInChanged?.Invoke(this, false);
+        SetSession(null);
+
+        if (triggerLogin)
+        {
+            await Init(cancellationToken);
+        }
     }
 
 
@@ -94,14 +98,17 @@ public class SessionService
         }
 
         var userId = loginResult.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value;
-
-        return new Session()
+        var session = new Session()
         {
             AccessToken = loginResult.AccessToken,
             Expires = loginResult.AccessTokenExpiration,
             RefreshToken = loginResult.RefreshToken,
             UserId = userId
         };
+
+        SaveSession(session);
+
+        return session;
     }
 
     private async Task<bool> RefreshIfNeeded(Session session, CancellationToken cancellationToken)
@@ -125,6 +132,17 @@ public class SessionService
         SaveSession(session);
 
         return true;
+    }
+
+    private void SetSession(Session? session)
+    {
+        var wasLoggedIn = IsLoggedIn;
+        _session = session;
+
+        if (wasLoggedIn != IsLoggedIn)
+        {
+            LoggedInChanged?.Invoke(this, IsLoggedIn);
+        }
     }
 
 

@@ -55,7 +55,7 @@ namespace ModsDude.WindowsClient.ApiClient.Generated
         private System.Net.Http.HttpClient _httpClient;
         private static System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings, true);
 
-        public RepoClient(SessionOld configuration, System.Net.Http.HttpClient httpClient) : base(configuration)
+        public RepoClient(SessionService configuration, System.Net.Http.HttpClient httpClient) : base(configuration)
         {
             BaseUrl = "https://localhost:7035";
             _httpClient = httpClient;

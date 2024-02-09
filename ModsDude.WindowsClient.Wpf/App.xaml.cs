@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.ApiClient;
 using ModsDude.WindowsClient.Model.DbContexts;
+using ModsDude.WindowsClient.Model.Exceptions;
 using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Services;
 using ModsDude.WindowsClient.ViewModel.Windows;
@@ -49,10 +50,8 @@ public partial class App : Application
 
     private async void InitSession()
     {
-        await _serviceProvider.GetRequiredService<SessionService>()
-            .Init(default);
-
-        // todo?
+        var sessionService = _serviceProvider.GetRequiredService<SessionService>();
+        await sessionService.Init(default);
     }
 
 
@@ -71,8 +70,14 @@ public partial class App : Application
 
     private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
     {
-        //TODO
-        // check if userfriendly exception
-        //MessageBox.Show()
+        var exception = e.Exception switch
+        {
+            UserFriendlyException userFriendlyException => userFriendlyException,
+            Exception unknownException => UserFriendlyException.WrapUnknown(unknownException)
+        };
+
+        MessageBox.Show(exception.Message, "Oops", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        e.Handled = true;
     }
 }

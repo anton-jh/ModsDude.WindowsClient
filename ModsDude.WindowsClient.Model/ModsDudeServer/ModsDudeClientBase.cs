@@ -1,13 +1,18 @@
 ﻿using ModsDude.WindowsClient.Model.Services;
+using System.Net.Http.Headers;
 
 namespace ModsDude.WindowsClient.Model.ModsDudeServer;
 public abstract class ModsDudeClientBase(
-    SessionOld session)
+    SessionService sessionService)
 {
-    protected Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
+    protected async Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
     {
         var msg = new HttpRequestMessage();
-        msg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", session.AccessToken);
-        return Task.FromResult(msg);
+
+        msg.Headers.Authorization = new AuthenticationHeaderValue(
+            "Bearer",
+            await sessionService.GetAccessToken(cancellationToken));
+
+        return msg;
     }
 }

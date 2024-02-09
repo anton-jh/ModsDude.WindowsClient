@@ -14,6 +14,9 @@
         FontSize="14">
 
     <Window.Resources>
+        <DataTemplate DataType="{x:Type pvm:LoginPageViewModel}">
+            <p:LoginPage />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type pvm:MainPageViewModel}">
             <p:MainPage />
         </DataTemplate>
@@ -25,5 +28,16 @@
         </DataTemplate>
     </Window.Resources>
 
-    <Frame Content="{Binding Path=CurrentPage}" NavigationUIVisibility="Hidden" />
+
+
+    <DockPanel>
+        
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Logout" Command="{Binding Path=LogoutCommand}" IsEnabled="{Binding Path=LoggedIn}" />
+        </Menu>
+
+        <Frame DockPanel.Dock="Top"
+               Content="{Binding Path=CurrentPage}" NavigationUIVisibility="Hidden" />
+        
+    </DockPanel>
 </Window>
