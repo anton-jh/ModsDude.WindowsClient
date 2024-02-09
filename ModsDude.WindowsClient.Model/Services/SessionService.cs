@@ -1,5 +1,6 @@
 ﻿using Auth0.OidcClient;
 using Microsoft.EntityFrameworkCore;
+using ModsDude.WindowsClient.Model.Exceptions;
 using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -47,7 +48,9 @@ public class SessionService
 
         _session = null;
         LoggedInChanged?.Invoke(this, false);
-        throw new Exception("Something went wrong, try logging in again");
+        throw new UserFriendlyException(
+            "Something went wrong, try logging in again",
+            "Refresh failed");
     }
 
     public async Task Init(CancellationToken cancellationToken)
@@ -85,7 +88,9 @@ public class SessionService
 
         if (loginResult.IsError)
         {
-            throw new Exception(loginResult.Error);
+            throw new UserFriendlyException(
+                "Login failed",
+                loginResult.Error);
         }
 
         var userId = loginResult.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value;

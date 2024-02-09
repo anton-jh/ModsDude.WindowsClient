@@ -1,5 +1,5 @@
 ﻿namespace ModsDude.WindowsClient.Model.Helpers;
-internal static class FileSystemHelper
+public static class FileSystemHelper
 {
     public static string GetDbDirectory()
     {

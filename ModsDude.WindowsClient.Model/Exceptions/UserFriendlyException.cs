@@ -1,17 +1,13 @@
 ﻿namespace ModsDude.WindowsClient.Model.Exceptions;
-public class UserFriendlyException : Exception
+public class UserFriendlyException(
+    string userMessage,
+    string? developerMessage = null,
+    Exception? inner = null)
+    : Exception(userMessage, inner)
 {
-    public UserFriendlyException(string userMessage, string? developerMessage = null)
-        : base(userMessage)
-    {
-        UserMessage = userMessage;
-        DeveloperMessage = developerMessage ?? userMessage;
-    }
+    public string UserMessage { get; } = userMessage;
+    public string DeveloperMessage { get; } = developerMessage ?? userMessage;
 
 
-    public string UserMessage { get; }
-    public string DeveloperMessage { get; }
-
-
-    public static UserFriendlyException Unknown => new UserFriendlyException("Unknown error");
+    public static UserFriendlyException Unknown => new("Unknown error");
 }

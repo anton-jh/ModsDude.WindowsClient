@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.ApiClient;
 using ModsDude.WindowsClient.Model.DbContexts;
+using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Services;
 using ModsDude.WindowsClient.ViewModel.Windows;
 using System;
@@ -32,8 +33,8 @@ public partial class App : Application
         var window = _serviceProvider.GetRequiredService<MainWindow>();
         window.Show();
 
-        //MigrateDatabase();
-        //Login();
+        MigrateDatabase();
+        InitSession();
     }
 
 
@@ -41,16 +42,17 @@ public partial class App : Application
     {
         var dbContext = _serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-        Directory.CreateDirectory(ApplicationDbContext.GetDbDirectory());
+        Directory.CreateDirectory(FileSystemHelper.GetDbDirectory());
 
         dbContext.Database.Migrate();
     }
 
-    private async void Login()
+    private async void InitSession()
     {
-        await _serviceProvider.GetRequiredService<SessionOld>().Login();
+        await _serviceProvider.GetRequiredService<SessionService>()
+            .Init(default);
 
-        // todo
+        // todo?
     }
 
 
@@ -59,11 +61,18 @@ public partial class App : Application
         services.AddSingleton<MainWindow>();
         services.AddSingleton<MainWindowViewModel>();
 
-        services.AddSingleton<SessionOld>();
+        services.AddSingleton<SessionService>();
         services.AddSingleton<RepoService>();
 
         services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Transient);
 
         services.AddModsDudeClient();
+    }
+
+    private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+    {
+        //TODO
+        // check if userfriendly exception
+        //MessageBox.Show()
     }
 }
