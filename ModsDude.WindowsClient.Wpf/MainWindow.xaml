@@ -14,6 +14,9 @@
         FontSize="14">
 
     <Window.Resources>
+        <DataTemplate DataType="{x:Type pvm:CreateRepoPageViewModel}">
+            <p:CreateRepoPage />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type pvm:LoginPageViewModel}">
             <p:LoginPage />
         </DataTemplate>

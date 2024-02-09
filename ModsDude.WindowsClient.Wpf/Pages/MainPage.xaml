@@ -8,7 +8,7 @@
       xmlns:pvm="clr-namespace:ModsDude.WindowsClient.ViewModel.Pages;assembly=ModsDude.WindowsClient.ViewModel"
       xmlns:p="clr-namespace:ModsDude.WindowsClient.Wpf.Pages"
       mc:Ignorable="d"
-      d:DataContext="{d:DesignInstance Type=pvm:MainPageViewModel, IsDesignTimeCreatable=True}"
+      d:DataContext="{d:DesignInstance Type=pvm:DesignTimeMainPageViewModel, IsDesignTimeCreatable=True}"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage"
       FontSize="14">
@@ -29,6 +29,12 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
+            <StackPanel DockPanel.Dock="Top"
+                        Orientation="Vertical">
+                <Button Content="Refresh" Command="{Binding Path=LoadReposCommand}" />
+                <Button Content="New" Command="{Binding Path=StartCreateRepoCommand}" />
+            </StackPanel>
 
             <ListView DockPanel.Dock="Top"
                       ItemsSource="{Binding Path=Repos}" SelectionMode="Single"

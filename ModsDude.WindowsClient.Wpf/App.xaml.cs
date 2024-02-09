@@ -6,6 +6,8 @@ using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Exceptions;
 using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Services;
+using ModsDude.WindowsClient.Utilities.GenericFactories;
+using ModsDude.WindowsClient.ViewModel.Pages;
 using ModsDude.WindowsClient.ViewModel.Windows;
 using System;
 using System.IO;
@@ -54,20 +56,6 @@ public partial class App : Application
         await sessionService.Init(default);
     }
 
-
-    private static void ConfigureServices(IServiceCollection services)
-    {
-        services.AddSingleton<MainWindow>();
-        services.AddSingleton<MainWindowViewModel>();
-
-        services.AddSingleton<SessionService>();
-        services.AddSingleton<RepoService>();
-
-        services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Transient);
-
-        services.AddModsDudeClient();
-    }
-
     private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
     {
         var exception = e.Exception switch
@@ -79,5 +67,21 @@ public partial class App : Application
         MessageBox.Show(exception.Message, "Oops", MessageBoxButton.OK, MessageBoxImage.Error);
 
         e.Handled = true;
+    }
+
+
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddSingleton<MainWindow>();
+        services.AddSingleton<MainWindowViewModel>();
+
+        services.AddFactory<MainPageViewModel>();
+
+        services.AddSingleton<SessionService>();
+        services.AddSingleton<RepoService>();
+
+        services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Transient);
+
+        services.AddModsDudeClient();
     }
 }

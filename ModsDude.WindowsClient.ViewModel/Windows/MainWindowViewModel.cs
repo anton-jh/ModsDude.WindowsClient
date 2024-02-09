@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ModsDude.WindowsClient.Model.Services;
+using ModsDude.WindowsClient.Utilities.GenericFactories;
 using ModsDude.WindowsClient.ViewModel.Pages;
 
 namespace ModsDude.WindowsClient.ViewModel.Windows;
@@ -8,23 +9,24 @@ public partial class MainWindowViewModel
     : ObservableObject
 {
     private readonly SessionService _sessionService;
+    private readonly IFactory<MainPageViewModel> _mainPageViewModelFactory;
 
 
-    public MainWindowViewModel(SessionService sessionService)
+    public MainWindowViewModel(
+        SessionService sessionService,
+        IFactory<MainPageViewModel> mainPageViewModelFactory)
     {
         _sessionService = sessionService;
-
-        _sessionService.LoggedInChanged += OnLoggedInChanged;
+        _mainPageViewModelFactory = mainPageViewModelFactory;
+        _sessionService.LoggedInChanged += OnSessionLoggedInChanged;
     }
 
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CurrentPage))]
     private bool _loggedIn = false;
 
-    public PageViewModel CurrentPage => LoggedIn
-        ? new MainPageViewModel()
-        : new LoginPageViewModel();
+    [ObservableProperty]
+    private PageViewModel _currentPage = new LoginPageViewModel();
 
 
     [RelayCommand]
@@ -34,8 +36,17 @@ public partial class MainWindowViewModel
     }
 
 
-    private void OnLoggedInChanged(object? sender, bool e)
+    private void OnSessionLoggedInChanged(object? sender, bool e)
     {
         LoggedIn = e;
+    }
+
+
+    partial void OnLoggedInChanged(bool value)
+    {
+        CurrentPage = value
+            ? _mainPageViewModelFactory.Create()
+            : new LoginPageViewModel();
+        CurrentPage.Init();
     }
 }
