@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using ModsDude.WindowsClient.Model.Services;
 using ModsDude.WindowsClient.Utilities.GenericFactories;
+using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Collections.ObjectModel;
 
@@ -10,16 +11,20 @@ public partial class MainPageViewModel
 {
     private readonly RepoService _repoService;
     private readonly IFactory<NewRepoItemViewModel> _newRepoItemViewModelFactory;
+    private readonly RepoPageViewModelFactory _repoPageViewModelFactory;
     private NewRepoItemViewModel? _repoDraft;
 
 
-    public MainPageViewModel(RepoService repoService, IFactory<NewRepoItemViewModel> newRepoItemViewModelFactory)
+    public MainPageViewModel(
+        RepoService repoService,
+        IFactory<NewRepoItemViewModel> newRepoItemViewModelFactory,
+        RepoPageViewModelFactory repoPageViewModelFactory)
     {
         _selectedMenuItem = MenuItems.First();
         _repoService = repoService;
         _newRepoItemViewModelFactory = newRepoItemViewModelFactory;
-
-        repoService.RepoCreated += RepoService_RepoCreated;
+        _repoPageViewModelFactory = repoPageViewModelFactory;
+        repoService.RepoListChanged += RepoListChanged;
     }
 
 
@@ -64,7 +69,7 @@ public partial class MainPageViewModel
     private async Task LoadRepos(CancellationToken cancellationToken)
     {
         var repos = await _repoService.GetRepos(cancellationToken);
-        var viewModels = repos.Select(x => new RepoItemViewModel(x));
+        var viewModels = repos.Select(x => new RepoItemViewModel(x, _repoPageViewModelFactory));
 
         Repos.Clear();
         foreach (var repo in viewModels)
@@ -100,8 +105,9 @@ public partial class MainPageViewModel
         }
     }
 
-    private void RepoService_RepoCreated()
+    private void RepoListChanged()
     {
+        StopCreateRepo();
         LoadReposCommand.Execute(null);
     }
 }

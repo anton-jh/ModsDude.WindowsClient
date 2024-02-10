@@ -1,14 +1,17 @@
 ﻿using ModsDude.WindowsClient.Model.Models;
 using ModsDude.WindowsClient.ViewModel.Pages;
+using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 
 namespace ModsDude.WindowsClient.ViewModel.ViewModels;
-public class RepoItemViewModel(CombinedRepo repo)
+public class RepoItemViewModel(
+    RepoModel repo,
+    RepoPageViewModelFactory repoPageViewModelFactory)
     : IMenuItemViewModel
 {
     public string Title => repo.Name;
 
     public PageViewModel GetPage()
     {
-        return new RepoPageViewModel(repo);
+        return repoPageViewModelFactory.Create(repo);
     }
 }

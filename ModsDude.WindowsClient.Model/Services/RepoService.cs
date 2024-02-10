@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using ModsDude.WindowsClient.ApiClient.Generated;
 using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Exceptions;
@@ -11,20 +12,22 @@ public class RepoService(
     SessionService sessionService)
 {
     public delegate void RepoCreatedEventHandler();
-    public event RepoCreatedEventHandler? RepoCreated;
+    public event RepoCreatedEventHandler? RepoListChanged;
 
 
-    public async Task<IEnumerable<CombinedRepo>> GetRepos(CancellationToken cancellationToken)
+    public async Task<IEnumerable<RepoModel>> GetRepos(CancellationToken cancellationToken)
     {
         var repos = await repoClient.GetMyReposAsync(cancellationToken);
         var instances = await dbContext.LocalInstances
             .Where(x => x.UserId == sessionService.UserId)
             .ToListAsync(cancellationToken);
 
-        var combinedRepos = repos.Select(x => new CombinedRepo()
+        var combinedRepos = repos.Select(x => new RepoModel()
         {
             Id = x.Repo.Id,
             Name = x.Repo.Name,
+            ModsScript = x.Repo.ModAdapter,
+            SavegamesScript = x.Repo.SavegameAdapter,
             LocalInstances = instances.Where(i => i.RepoId == x.Repo.Id).ToList()
         });
 
@@ -47,12 +50,36 @@ public class RepoService(
         {
             throw new UserFriendlyException("Name taken", null, ex);
         }
-        OnRepoCreated();
+        OnRepoListChanged();
+    }
+
+    public async Task UpdateRepo(Guid id, string name, CancellationToken cancellationToken)
+    {
+        var request = new UpdateRepoRequest()
+        {
+            Name = name
+        };
+        try
+        {
+            await repoClient.UpdateRepoAsync(id, request, cancellationToken);
+        }
+        catch (ApiException ex) when (ex.StatusCode == 409)
+        {
+            throw new UserFriendlyException("Name taken", null, ex);
+        }
+        OnRepoListChanged();
+    }
+
+    public async Task DeleteRepo(Guid id, CancellationToken cancellationToken)
+    {
+        await repoClient.DeleteRepoAsync(id, cancellationToken);
+
+        OnRepoListChanged();
     }
 
 
-    private void OnRepoCreated()
+    private void OnRepoListChanged()
     {
-        RepoCreated?.Invoke();
+        RepoListChanged?.Invoke();
     }
 }

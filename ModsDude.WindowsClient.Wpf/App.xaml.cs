@@ -8,6 +8,7 @@ using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Services;
 using ModsDude.WindowsClient.Utilities.GenericFactories;
 using ModsDude.WindowsClient.ViewModel.Pages;
+using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using ModsDude.WindowsClient.ViewModel.Windows;
 using System;
@@ -79,6 +80,8 @@ public partial class App : Application
         services.AddFactory<MainPageViewModel>();
         services.AddFactory<CreateRepoPageViewModel>();
         services.AddFactory<NewRepoItemViewModel>();
+        services.AddTransient<RepoAdminPageViewModelFactory>();
+        services.AddTransient<RepoPageViewModelFactory>();
 
         services.AddSingleton<SessionService>();
         services.AddSingleton<RepoService>();

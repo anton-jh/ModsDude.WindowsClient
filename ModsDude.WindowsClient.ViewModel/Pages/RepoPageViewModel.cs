@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using ModsDude.WindowsClient.Model.Models;
+using ModsDude.WindowsClient.Utilities.GenericFactories;
+using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -8,12 +10,16 @@ namespace ModsDude.WindowsClient.ViewModel.Pages;
 public partial class RepoPageViewModel
     : PageViewModel
 {
-    private readonly CombinedRepo _repo;
+    private readonly RepoModel _repo;
+    private readonly RepoAdminPageViewModelFactory _repoAdminPageViewModelFactory;
 
 
-    public RepoPageViewModel(CombinedRepo repo)
+    public RepoPageViewModel(
+        RepoModel repo,
+        RepoAdminPageViewModelFactory repoAdminPageViewModelFactory)
     {
         _repo = repo;
+        _repoAdminPageViewModelFactory = repoAdminPageViewModelFactory;
         _name = repo.Name;
 
         CreateMenu();
@@ -76,7 +82,7 @@ public partial class RepoPageViewModel
     {
         MenuItems = [
             new MenuItemViewModel("Overview", new ExamplePageViewModel($"Repo overview ({Name})")),
-            new MenuItemViewModel("Admin", new ExamplePageViewModel($"Admin stuff ({Name})"))
+            new MenuItemViewModel("Admin", _repoAdminPageViewModelFactory.Create(_repo))
         ];
     }
 }
