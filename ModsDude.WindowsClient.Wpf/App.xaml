@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:ModsDude.WindowsClient.Wpf"
              DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
-
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="0 5" />
+        </Style>
     </Application.Resources>
 </Application>

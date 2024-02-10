@@ -34,9 +34,39 @@
                 <Label Grid.Column="0" Grid.Row="0"
                        Content="Name" />
                 <TextBox Grid.Column="1" Grid.Row="0"
-                         Text="{Binding Path=Name, Mode=TwoWay}" />
+                         Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalContentAlignment="Center" />
 
             </Grid>
+        </GroupBox>
+
+        <StackPanel Grid.Column="1" Grid.Row="0"
+                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Content="Save" Command="{Binding Path=SubmitCommand}"
+                    Width="100" />
+        </StackPanel>
+
+        <GroupBox Grid.Column="0" Grid.Row="1"
+                  Header="Mods">
+            <DockPanel>
+                <CheckBox DockPanel.Dock="Top"
+                          Content="Use mods feature" IsChecked="{Binding Path=UseModsFeature, Mode=TwoWay}"/>
+                <TextBox DockPanel.Dock="Top" 
+                         Text="{Binding Path=ModsScript, Mode=TwoWay}" IsEnabled="{Binding Path=UseModsFeature}"
+                         AcceptsReturn="True" AcceptsTab="True"/>
+            </DockPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Column="1" Grid.Row="1"
+                  Header="Savegames">
+            <DockPanel>
+                <CheckBox DockPanel.Dock="Top"
+                          Content="Use savegames feature" IsChecked="{Binding Path=UseSavegamesFeature, Mode=TwoWay}"/>
+                <TextBox DockPanel.Dock="Top" 
+                         Text="{Binding Path=SavegamesScript, Mode=TwoWay}" IsEnabled="{Binding Path=UseSavegamesFeature}"
+                         AcceptsReturn="True" AcceptsTab="True"/>
+            </DockPanel>
         </GroupBox>
 
     </Grid>

@@ -1,6 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using ModsDude.WindowsClient.Model.Services;
+using ModsDude.WindowsClient.Utilities.GenericFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Collections.ObjectModel;
 
@@ -9,17 +9,19 @@ public partial class MainPageViewModel
     : PageViewModel
 {
     private readonly RepoService _repoService;
+    private readonly IFactory<NewRepoItemViewModel> _newRepoItemViewModelFactory;
+    private NewRepoItemViewModel? _repoDraft;
 
 
-    public MainPageViewModel(RepoService repoService)
+    public MainPageViewModel(RepoService repoService, IFactory<NewRepoItemViewModel> newRepoItemViewModelFactory)
     {
         _selectedMenuItem = MenuItems.First();
         _repoService = repoService;
+        _newRepoItemViewModelFactory = newRepoItemViewModelFactory;
+
+        repoService.RepoCreated += RepoService_RepoCreated;
     }
 
-
-    [ObservableProperty]
-    private NewRepoItemViewModel? _repoDraft;
 
     private IMenuItemViewModel? _selectedMenuItem;
     public IMenuItemViewModel? SelectedMenuItem
@@ -48,6 +50,10 @@ public partial class MainPageViewModel
 
     public ObservableCollection<IMenuItemViewModel> Repos { get; } = [];
 
+    public string NewRepoButtonText => _repoDraft is not null
+        ? "Cancel"
+        : "New";
+
 
     public override void Init()
     {
@@ -68,21 +74,34 @@ public partial class MainPageViewModel
     }
 
     [RelayCommand]
-    private void StartCreateRepo()
+    private void ToggleCreateRepo()
     {
-        RepoDraft = new NewRepoItemViewModel();
+        if (_repoDraft is null)
+        {
+            StopCreateRepo();
+            _repoDraft = _newRepoItemViewModelFactory.Create();
+            Repos.Insert(0, _repoDraft);
+            SelectedMenuItem = _repoDraft;
+            OnPropertyChanged(nameof(NewRepoButtonText));
+        }
+        else
+        {
+            StopCreateRepo();
+        }
     }
 
-    partial void OnRepoDraftChanged(NewRepoItemViewModel? oldValue, NewRepoItemViewModel? newValue)
+    private void StopCreateRepo()
     {
-        if (oldValue is not null)
+        if (_repoDraft is not null)
         {
-            Repos.Remove(oldValue);
+            Repos.Remove(_repoDraft);
+            _repoDraft = null;
+            OnPropertyChanged(nameof(NewRepoButtonText));
         }
-        if (newValue is not null)
-        {
-            Repos.Insert(0, newValue);
-            SelectedMenuItem = newValue;
-        }
+    }
+
+    private void RepoService_RepoCreated()
+    {
+        LoadReposCommand.Execute(null);
     }
 }
