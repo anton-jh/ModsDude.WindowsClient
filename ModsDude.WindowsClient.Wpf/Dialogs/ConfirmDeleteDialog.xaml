@@ -1,0 +1,23 @@
+﻿<Window x:Class="ModsDude.WindowsClient.Wpf.Dialogs.ConfirmDeleteDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModsDude.WindowsClient.Wpf.Dialogs"
+        mc:Ignorable="d"
+        Title="DeleteRepoDialog" Height="150" Width="200"
+        ResizeMode="NoResize" WindowStyle="ToolWindow"
+        FontSize="14">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <TextBlock TextWrapping="Wrap" TextAlignment="Center">
+            To delete the repo, type its name in the box and click OK.
+        </TextBlock>
+        <TextBox x:Name="confirmTextBox" TextInput="ConfirmTextBox_TextInput" />
+        <DockPanel>
+            <Button DockPanel.Dock="Left"
+                    x:Name="cancelButton" Content="Cancel" Click="ButtonCancel_Click" />
+            <Button DockPanel.Dock="Right"
+                    x:Name="confirmButton" Content="Delete" Click="ButtonConfirm_Click" />
+        </DockPanel>
+    </StackPanel>
+</Window>

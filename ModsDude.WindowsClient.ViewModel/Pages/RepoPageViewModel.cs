@@ -76,7 +76,7 @@ public partial class RepoPageViewModel
     {
         MenuItems = [
             new MenuItemViewModel("Overview", new ExamplePageViewModel($"Repo overview ({Name})")),
-            new MenuItemViewModel("Setup", new ExamplePageViewModel($"Setup repo ({Name})"))
+            new MenuItemViewModel("Admin", new ExamplePageViewModel($"Admin stuff ({Name})"))
         ];
     }
 }
