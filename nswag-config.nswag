@@ -11,7 +11,7 @@
   "codeGenerators": {
     "openApiToCSharpClient": {
       "clientBaseClass": "ModsDudeClientBase",
-      "configurationClass": "Session",
+      "configurationClass": "SessionService",
       "generateClientClasses": true,
       "suppressClientClassesOutput": false,
       "generateClientInterfaces": true,
