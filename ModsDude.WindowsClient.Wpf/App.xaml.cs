@@ -85,6 +85,7 @@ public partial class App : Application
 
         services.AddSingleton<SessionService>();
         services.AddSingleton<RepoService>();
+        services.AddSingleton<ProfileService>();
 
         services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Transient);
 

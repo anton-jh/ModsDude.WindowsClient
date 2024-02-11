@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using ModsDude.WindowsClient.Model.Models;
+using ModsDude.WindowsClient.Model.Services;
 using ModsDude.WindowsClient.Utilities.GenericFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
@@ -12,14 +14,17 @@ public partial class RepoPageViewModel
 {
     private readonly RepoModel _repo;
     private readonly RepoAdminPageViewModelFactory _repoAdminPageViewModelFactory;
+    private readonly ProfileService _profileService;
 
 
     public RepoPageViewModel(
         RepoModel repo,
-        RepoAdminPageViewModelFactory repoAdminPageViewModelFactory)
+        RepoAdminPageViewModelFactory repoAdminPageViewModelFactory,
+        ProfileService profileService)
     {
         _repo = repo;
         _repoAdminPageViewModelFactory = repoAdminPageViewModelFactory;
+        _profileService = profileService;
         _name = repo.Name;
 
         CreateMenu();
@@ -57,24 +62,13 @@ public partial class RepoPageViewModel
         new MenuItemViewModel("Dedicated server", new ExamplePageViewModel("Instance (Dedicated server)"))
     ];
 
-    public ObservableCollection<IMenuItemViewModel> Profiles { get; } = [
-        new MenuItemViewModel("Profile 1", new ExamplePageViewModel("Profile 1")),
-        new MenuItemViewModel("Profile 2", new ExamplePageViewModel("Profile 2")),
-        new MenuItemViewModel("Profile 3", new ExamplePageViewModel("Profile 3")),
-        new MenuItemViewModel("Profile 4", new ExamplePageViewModel("Profile 4")),
-        new MenuItemViewModel("Profile 5", new ExamplePageViewModel("Profile 5")),
-        new MenuItemViewModel("Profile 6", new ExamplePageViewModel("Profile 6")),
-        new MenuItemViewModel("Profile 7", new ExamplePageViewModel("Profile 7")),
-        new MenuItemViewModel("Profile 8", new ExamplePageViewModel("Profile 8")),
-        new MenuItemViewModel("Profile 9", new ExamplePageViewModel("Profile 9")),
-        new MenuItemViewModel("Profile 10", new ExamplePageViewModel("Profile 10")),
-        new MenuItemViewModel("Profile 11", new ExamplePageViewModel("Profile 11")),
-        new MenuItemViewModel("Profile 12", new ExamplePageViewModel("Profile 12")),
-        new MenuItemViewModel("Profile 13", new ExamplePageViewModel("Profile 13")),
-        new MenuItemViewModel("Profile 14", new ExamplePageViewModel("Profile 14")),
-        new MenuItemViewModel("Profile 15", new ExamplePageViewModel("Profile 15")),
-        new MenuItemViewModel("Profile 16", new ExamplePageViewModel("Profile 16")),
-    ];
+    public ObservableCollection<IMenuItemViewModel> Profiles { get; } = [];
+
+
+    public override void Init()
+    {
+        LoadProfilesCommand.Execute(null);
+    }
 
 
     [MemberNotNull(nameof(MenuItems))]
@@ -84,5 +78,18 @@ public partial class RepoPageViewModel
             new MenuItemViewModel("Overview", new ExamplePageViewModel($"Repo overview ({Name})")),
             new MenuItemViewModel("Admin", _repoAdminPageViewModelFactory.Create(_repo))
         ];
+    }
+
+    [RelayCommand]
+    private async Task LoadProfiles(CancellationToken cancellationToken)
+    {
+        var profiles = await _profileService.GetProfiles(_repo.Id, cancellationToken);
+        var viewModels = profiles.Select(x => new ProfileItemViewModel(x));
+
+        Profiles.Clear();
+        foreach (var profile in viewModels)
+        {
+            Profiles.Add(profile);
+        }
     }
 }

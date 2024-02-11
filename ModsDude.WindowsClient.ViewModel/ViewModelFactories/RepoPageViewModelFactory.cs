@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.Model.Models;
+using ModsDude.WindowsClient.Model.Services;
 using ModsDude.WindowsClient.ViewModel.Pages;
 
 namespace ModsDude.WindowsClient.ViewModel.ViewModelFactories;
@@ -10,6 +11,7 @@ public class RepoPageViewModelFactory(
     {
         return new RepoPageViewModel(
             repo,
-            services.GetRequiredService<RepoAdminPageViewModelFactory>());
+            services.GetRequiredService<RepoAdminPageViewModelFactory>(),
+            services.GetRequiredService<ProfileService>());
     }
 }

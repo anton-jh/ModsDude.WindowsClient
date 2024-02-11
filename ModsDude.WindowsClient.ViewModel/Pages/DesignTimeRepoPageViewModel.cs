@@ -5,13 +5,16 @@ public class DesignTimeRepoPageViewModel
     : RepoPageViewModel
 {
     public DesignTimeRepoPageViewModel()
-        : base(new RepoModel()
-        {
-            Id = default,
-            Name = "Test repo 123",
-            ModsScript = "modsmodsmodsmods",
-            SavegamesScript = "savegamessavegames"
-        }, null!)
+        : base(
+            new RepoModel()
+            {
+                Id = default,
+                Name = "Test repo 123",
+                ModsScript = "modsmodsmodsmods",
+                SavegamesScript = "savegamessavegames"
+            },
+            null!,
+            null!)
     {
     }
 }

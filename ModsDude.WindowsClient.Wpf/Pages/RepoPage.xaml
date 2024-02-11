@@ -33,16 +33,20 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ListView Grid.Row="1"
-                      ItemsSource="{Binding Path=Profiles}" SelectionMode="Single"
-                      SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}"
-                      ScrollViewer.CanContentScroll="False">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding Path=Title}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <DockPanel Grid.Row="1">
+                <Button DockPanel.Dock="Top"
+                        Content="Refresh" Command="{Binding Path=LoadProfilesCommand}" />
+                <ListView DockPanel.Dock="Top"
+                          ItemsSource="{Binding Path=Profiles}" SelectionMode="Single"
+                          SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}"
+                          ScrollViewer.CanContentScroll="False">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=Title}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </DockPanel>
             <ListView Grid.Row="2"
                   ItemsSource="{Binding Path=Instances}" SelectionMode="Single"
                   SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}">
