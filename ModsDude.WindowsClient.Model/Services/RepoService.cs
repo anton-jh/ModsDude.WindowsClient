@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 using ModsDude.WindowsClient.ApiClient.Generated;
 using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Exceptions;
@@ -11,8 +10,8 @@ public class RepoService(
     ApplicationDbContext dbContext,
     SessionService sessionService)
 {
-    public delegate void RepoCreatedEventHandler();
-    public event RepoCreatedEventHandler? RepoListChanged;
+    public delegate void RepoListChangedEventHandler(Guid? repoIdOfInterest);
+    public event RepoListChangedEventHandler? RepoListChanged;
 
 
     public async Task<IEnumerable<RepoModel>> GetRepos(CancellationToken cancellationToken)
@@ -36,6 +35,8 @@ public class RepoService(
 
     public async Task CreateRepo(string name, string? modAdapterScript, string? savegameAdapterScript, CancellationToken cancellationToken)
     {
+        RepoDto repo;
+
         var request = new CreateRepoRequest()
         {
             Name = name,
@@ -44,13 +45,13 @@ public class RepoService(
         };
         try
         {
-            await repoClient.CreateRepoAsync(request, cancellationToken);
+            repo = await repoClient.CreateRepoAsync(request, cancellationToken);
         }
         catch (ApiException ex) when (ex.StatusCode == 409)
         {
             throw new UserFriendlyException("Name taken", null, ex);
         }
-        OnRepoListChanged();
+        OnRepoListChanged(repo.Id);
     }
 
     public async Task UpdateRepo(Guid id, string name, CancellationToken cancellationToken)
@@ -67,19 +68,19 @@ public class RepoService(
         {
             throw new UserFriendlyException("Name taken", null, ex);
         }
-        OnRepoListChanged();
+        OnRepoListChanged(id);
     }
 
     public async Task DeleteRepo(Guid id, CancellationToken cancellationToken)
     {
         await repoClient.DeleteRepoAsync(id, cancellationToken);
 
-        OnRepoListChanged();
+        OnRepoListChanged(null);
     }
 
 
-    private void OnRepoListChanged()
+    private void OnRepoListChanged(Guid? idOfInterest)
     {
-        RepoListChanged?.Invoke();
+        RepoListChanged?.Invoke(idOfInterest);
     }
 }

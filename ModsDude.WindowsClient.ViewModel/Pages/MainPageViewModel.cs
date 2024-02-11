@@ -105,9 +105,18 @@ public partial class MainPageViewModel
         }
     }
 
-    private void RepoListChanged()
+    private void RepoListChanged(Guid? repoIdOfInterest)
     {
         StopCreateRepo();
         LoadReposCommand.Execute(null);
+
+        if (repoIdOfInterest is not null)
+        {
+            var repo = Repos
+                .OfType<RepoItemViewModel>()
+                .FirstOrDefault(x => x.Id == repoIdOfInterest);
+
+            SelectedMenuItem = repo;
+        }
     }
 }

@@ -8,6 +8,7 @@ public class RepoItemViewModel(
     RepoPageViewModelFactory repoPageViewModelFactory)
     : IMenuItemViewModel
 {
+    public Guid Id => repo.Id;
     public string Title => repo.Name;
 
     public PageViewModel GetPage()
