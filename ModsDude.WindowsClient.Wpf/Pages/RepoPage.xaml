@@ -36,6 +36,8 @@
             <DockPanel Grid.Row="1">
                 <Button DockPanel.Dock="Top"
                         Content="Refresh" Command="{Binding Path=LoadProfilesCommand}" />
+                <Button DockPanel.Dock="Top"
+                        Content="New" />
                 <ListView DockPanel.Dock="Top"
                           ItemsSource="{Binding Path=Profiles}" SelectionMode="Single"
                           SelectedItem="{Binding Path=SelectedMenuItem, Mode=TwoWay}"

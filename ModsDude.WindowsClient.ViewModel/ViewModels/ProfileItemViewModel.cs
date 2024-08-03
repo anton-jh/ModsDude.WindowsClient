@@ -2,9 +2,11 @@
 using ModsDude.WindowsClient.ViewModel.Pages;
 
 namespace ModsDude.WindowsClient.ViewModel.ViewModels;
-public class ProfileItemViewModel(ProfileDto profile)
+public class ProfileItemViewModel(
+    ProfileDto profile)
     : IMenuItemViewModel
 {
+    public Guid Id => profile.Id;
     public string Title => profile.Name;
 
     public PageViewModel GetPage()
