@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using ModsDude.WindowsClient.Model.Models;
 using ModsDude.WindowsClient.Model.Services;
-using ModsDude.WindowsClient.Utilities.GenericFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Collections.ObjectModel;
@@ -35,8 +34,8 @@ public partial class RepoPageViewModel
     [ObservableProperty]
     private string _name;
 
-    private IMenuItemViewModel _selectedMenuItem;
-    public IMenuItemViewModel SelectedMenuItem
+    private IMenuItemViewModel? _selectedMenuItem;
+    public IMenuItemViewModel? SelectedMenuItem
     {
         get => _selectedMenuItem;
         set
@@ -53,7 +52,7 @@ public partial class RepoPageViewModel
         }
     }
 
-    public PageViewModel CurrentPage => SelectedMenuItem.GetPage();
+    public PageViewModel? CurrentPage => SelectedMenuItem?.GetPage();
 
     public ObservableCollection<IMenuItemViewModel> MenuItems { get; private set; }
 

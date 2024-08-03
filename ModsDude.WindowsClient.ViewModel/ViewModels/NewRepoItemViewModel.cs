@@ -8,14 +8,12 @@ public partial class NewRepoItemViewModel
     : ObservableObject, IMenuItemViewModel
 {
     private readonly CreateRepoPageViewModel _page;
-    private readonly IFactory<CreateRepoPageViewModel> _createRepoPageViewModelFactory;
 
 
     public NewRepoItemViewModel(IFactory<CreateRepoPageViewModel> createRepoPageViewModelFactory)
     {
         _page = createRepoPageViewModelFactory.Create();
         _page.PropertyChanged += Page_PropertyChanged;
-        _createRepoPageViewModelFactory = createRepoPageViewModelFactory;
     }
 
 

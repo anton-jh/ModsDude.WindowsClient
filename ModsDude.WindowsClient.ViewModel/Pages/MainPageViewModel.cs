@@ -83,7 +83,6 @@ public partial class MainPageViewModel
     {
         if (_repoDraft is null)
         {
-            StopCreateRepo();
             _repoDraft = _newRepoItemViewModelFactory.Create();
             Repos.Insert(0, _repoDraft);
             SelectedMenuItem = _repoDraft;
