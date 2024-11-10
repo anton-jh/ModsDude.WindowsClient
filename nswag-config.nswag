@@ -34,7 +34,7 @@
       "clientClassAccessModifier": "public",
       "typeAccessModifier": "public",
       "propertySetterAccessModifier": "",
-      "generateNativeRecords": false,
+      "generateNativeRecords": true,
       "generateContractsOutput": false,
       "contractsNamespace": null,
       "contractsOutputFilePath": null,
@@ -45,8 +45,11 @@
       "serializeTypeInformation": false,
       "queryNullValue": "",
       "className": "{controller}Client",
-      "operationGenerationMode": "MultipleClientsFromOperationId",
-      "additionalNamespaceUsages": [],
+      "operationGenerationMode": "MultipleClientsFromFirstTagAndOperationId",
+      "additionalNamespaceUsages": [
+        "ModsDude.WindowsClient.Model.ModsDudeServer",
+        "ModsDude.WindowsClient.Model.Services"
+      ],
       "additionalContractNamespaceUsages": [],
       "generateOptionalParameters": true,
       "generateJsonMethods": false,

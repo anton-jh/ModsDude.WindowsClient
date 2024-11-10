@@ -3,7 +3,7 @@ using ModsDude.WindowsClient.Model.Exceptions;
 
 namespace ModsDude.WindowsClient.Model.Services;
 public class ProfileService(
-    IProfileClient profileClient)
+    IProfilesClient profileClient)
 {
     public delegate void ProfileListChangedEventHandler(Guid? profileIdOfInterest);
     public event ProfileListChangedEventHandler? ProfileListChanged;
@@ -11,7 +11,7 @@ public class ProfileService(
 
     public async Task<IEnumerable<ProfileDto>> GetProfiles(Guid repoId, CancellationToken cancellationToken)
     {
-        return await profileClient.GetAllAsync(repoId, cancellationToken);
+        return await profileClient.GetProfilesV1Async(repoId, cancellationToken);
     }
 
     public async Task CreateProfile(Guid repoId, string name, CancellationToken cancellationToken)
@@ -25,7 +25,7 @@ public class ProfileService(
 
         try
         {
-            profile = await profileClient.CreateProfileAsync(repoId, request, cancellationToken);
+            profile = await profileClient.CreateProfileV1Async(repoId, request, cancellationToken);
         }
         catch (ApiException ex) when (ex.StatusCode == 409)
         {
@@ -43,7 +43,7 @@ public class ProfileService(
 
         try
         {
-            await profileClient.UpdateAsync(repoId, profileId, request, cancellationToken);
+            await profileClient.UpdateProfileV1Async(repoId, profileId, request, cancellationToken);
         }
         catch (ApiException ex) when (ex.StatusCode == 409)
         {
@@ -54,7 +54,7 @@ public class ProfileService(
 
     public async Task DeleteProfile(Guid repoId, Guid profileId, CancellationToken cancellationToken)
     {
-        await profileClient.DeleteAsync(repoId, profileId, cancellationToken);
+        await profileClient.DeleteProfileV1Async(repoId, profileId, cancellationToken);
 
         OnProfileListChanged(null);
     }

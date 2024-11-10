@@ -12,10 +12,8 @@ public partial class RepoAdminPageViewModel(
     [ObservableProperty]
     private string _name = repo.Name;
 
-    public bool UseModsFeature { get; } = repo.ModsScript is not null;
-    public bool UseSavegamesFeature { get; } = repo.SavegamesScript is not null;
-    public string? ModsScript { get; } = repo.ModsScript;
-    public string? SavegamesScript { get; } = repo.SavegamesScript;
+
+    // TODO Adapter id and configuration. Probably as a GameAdapter class or something
 
 
     [RelayCommand]

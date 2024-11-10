@@ -10,8 +10,8 @@ public class DesignTimeRepoPageViewModel
             {
                 Id = default,
                 Name = "Test repo 123",
-                ModsScript = "modsmodsmodsmods",
-                SavegamesScript = "savegamessavegames"
+                AdapterId = "test_placeholder",
+                AdapterConfiguration = ""
             },
             null!,
             null!)

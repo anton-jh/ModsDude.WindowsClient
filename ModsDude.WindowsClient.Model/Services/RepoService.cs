@@ -6,7 +6,7 @@ using ModsDude.WindowsClient.Model.Models;
 
 namespace ModsDude.WindowsClient.Model.Services;
 public class RepoService(
-    IRepoClient repoClient,
+    IReposClient repoClient,
     ApplicationDbContext dbContext,
     SessionService sessionService)
 {
@@ -16,7 +16,7 @@ public class RepoService(
 
     public async Task<IEnumerable<RepoModel>> GetRepos(CancellationToken cancellationToken)
     {
-        var repos = await repoClient.GetMyReposAsync(cancellationToken);
+        var repos = await repoClient.GetMyReposV1Async(cancellationToken);
         var instances = await dbContext.LocalInstances
             .Where(x => x.UserId == sessionService.UserId)
             .ToListAsync(cancellationToken);
@@ -25,27 +25,27 @@ public class RepoService(
         {
             Id = x.Repo.Id,
             Name = x.Repo.Name,
-            ModsScript = x.Repo.ModAdapter,
-            SavegamesScript = x.Repo.SavegameAdapter,
+            AdapterId = x.Repo.AdapterId,
+            AdapterConfiguration = x.Repo.AdapterConfiguration,
             LocalInstances = instances.Where(i => i.RepoId == x.Repo.Id).ToList()
         });
 
         return combinedRepos;
     }
 
-    public async Task CreateRepo(string name, string? modAdapterScript, string? savegameAdapterScript, CancellationToken cancellationToken)
+    public async Task CreateRepo(string name, string adapterId, string adapterConfiguration, CancellationToken cancellationToken)
     {
         RepoDto repo;
 
         var request = new CreateRepoRequest()
         {
             Name = name,
-            ModAdapterScript = modAdapterScript,
-            SavegameAdapterScript = savegameAdapterScript,
+            AdapterId = adapterId,
+            AdapterConfiguration = adapterConfiguration,
         };
         try
         {
-            repo = await repoClient.CreateRepoAsync(request, cancellationToken);
+            repo = await repoClient.CreateRepoV1Async(request, cancellationToken);
         }
         catch (ApiException ex) when (ex.StatusCode == 409)
         {
@@ -62,7 +62,7 @@ public class RepoService(
         };
         try
         {
-            await repoClient.UpdateRepoAsync(id, request, cancellationToken);
+            await repoClient.UpdateRepoV1Async(id, request, cancellationToken);
         }
         catch (ApiException ex) when (ex.StatusCode == 409)
         {
@@ -73,7 +73,7 @@ public class RepoService(
 
     public async Task DeleteRepo(Guid id, CancellationToken cancellationToken)
     {
-        await repoClient.DeleteRepoAsync(id, cancellationToken);
+        await repoClient.DeleteRepoV1Async(id, cancellationToken);
 
         OnRepoListChanged(null);
     }
