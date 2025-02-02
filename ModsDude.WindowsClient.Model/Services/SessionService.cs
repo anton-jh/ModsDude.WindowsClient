@@ -1,29 +1,16 @@
-﻿using Auth0.OidcClient;
-using ModsDude.WindowsClient.Model.Exceptions;
+﻿using ModsDude.WindowsClient.Model.Exceptions;
 using ModsDude.WindowsClient.Model.Helpers;
+using ModsDude.WindowsClient.Model.Interfaces;
 using ModsDude.WindowsClient.Model.Models;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
 
 namespace ModsDude.WindowsClient.Model.Services;
-public class SessionService
+public class SessionService(
+    IAuthService loginService)
 {
     private const string _sessionFilename = "session.json";
-    private readonly Auth0Client _authClient;
-    private Session? _session;
 
-    
-    public SessionService()
-    {
-        var clientOptions = new Auth0ClientOptions
-        {
-            Domain = "modsdude-dev.eu.auth0.com",
-            ClientId = "Hh7QKply1Ktxoq2Xv2mOicHp2VIWWAia",
-            Scope = "openid profile email offline_access create:repo",
-        };
-        _authClient = new Auth0Client(clientOptions);
-        clientOptions.PostLogoutRedirectUri = clientOptions.RedirectUri;
-    }
+    private Session? _session;
 
 
     public event EventHandler<bool>? LoggedInChanged;
@@ -71,7 +58,7 @@ public class SessionService
 
     public async Task Logout(bool triggerLogin = true, CancellationToken cancellationToken = default)
     {
-        await _authClient.LogoutAsync(cancellationToken: cancellationToken);
+        // await _authClient.LogoutAsync(cancellationToken: cancellationToken);
 
         ClearSession();
         SetSession(null);
@@ -85,27 +72,7 @@ public class SessionService
 
     private async Task<Session> Login(CancellationToken cancellationToken)
     {
-        var loginResult = await _authClient.LoginAsync(new
-        {
-            audience = "api.modsdude.com"
-        }, cancellationToken);
-
-        if (loginResult.IsError)
-        {
-            throw new UserFriendlyException(
-                "Login failed",
-                loginResult.Error);
-        }
-
-        var userId = loginResult.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value;
-        var session = new Session()
-        {
-            AccessToken = loginResult.AccessToken,
-            Expires = loginResult.AccessTokenExpiration,
-            RefreshToken = loginResult.RefreshToken,
-            UserId = userId
-        };
-
+        var session = await loginService.Login(cancellationToken);
         SaveSession(session);
 
         return session;
@@ -118,18 +85,10 @@ public class SessionService
             return true;
         }
 
-        var refreshResult = await _authClient.RefreshTokenAsync(session.RefreshToken, cancellationToken);
-
-        if (refreshResult.IsError)
-        {
-            return false;
-        }
-
-        session.RefreshToken = refreshResult.RefreshToken;
-        session.AccessToken = refreshResult.AccessToken;
-        session.Expires = refreshResult.AccessTokenExpiration;
-
+        await loginService.Refresh(session, cancellationToken);
         SaveSession(session);
+
+        // TODO: What if cannot refresh?
 
         return true;
     }

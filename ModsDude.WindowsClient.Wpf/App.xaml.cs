@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Exceptions;
 using ModsDude.WindowsClient.Model.Helpers;
+using ModsDude.WindowsClient.Model.Interfaces;
 using ModsDude.WindowsClient.Model.ModsDudeServer;
 using ModsDude.WindowsClient.Model.Services;
 using ModsDude.WindowsClient.Utilities.GenericFactories;
@@ -11,6 +12,7 @@ using ModsDude.WindowsClient.ViewModel.Pages;
 using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
 using ModsDude.WindowsClient.ViewModel.ViewModels;
 using ModsDude.WindowsClient.ViewModel.Windows;
+using ModsDude.WindowsClient.Wpf.Auth;
 using System;
 using System.IO;
 using System.Windows;
@@ -66,7 +68,7 @@ public partial class App : Application
             Exception unknownException => UserFriendlyException.WrapUnknown(unknownException)
         };
 
-        MessageBox.Show(exception.Message, "Oops", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show($"{exception.Message}\n\n{exception.DeveloperMessage}", "Oops", MessageBoxButton.OK, MessageBoxImage.Error);
 
         e.Handled = true;
     }
@@ -83,6 +85,7 @@ public partial class App : Application
         services.AddTransient<RepoAdminPageViewModelFactory>();
         services.AddTransient<RepoPageViewModelFactory>();
 
+        services.AddSingleton<IAuthService, AadB2CAuthService>();
         services.AddSingleton<SessionService>();
         services.AddSingleton<RepoService>();
         services.AddSingleton<ProfileService>();
