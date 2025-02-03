@@ -49,7 +49,7 @@ public partial class App : Application
     {
         using var dbContext = _serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-        Directory.CreateDirectory(FileSystemHelper.GetDbDirectory());
+        Directory.CreateDirectory(FileSystemHelper.GetAppDataDirectory());
 
         dbContext.Database.Migrate();
     }
@@ -58,6 +58,14 @@ public partial class App : Application
     {
         var sessionService = _serviceProvider.GetRequiredService<SessionService>();
         await sessionService.GetSession(default);
+
+        sessionService.LoggedInChanged += async (_, isLoggedIn) =>
+        {
+            if (!isLoggedIn)
+            {
+                await sessionService.GetSession(default);
+            }
+        };
     }
 
     private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

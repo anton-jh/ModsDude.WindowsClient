@@ -14,7 +14,7 @@ public class ApplicationDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite($"DataSource={Path.Combine(FileSystemHelper.GetDbDirectory(), _dbFilename)}");
+        optionsBuilder.UseSqlite($"DataSource={Path.Combine(FileSystemHelper.GetAppDataDirectory(), _dbFilename)}");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -40,10 +40,10 @@ public class SessionService(
 
             return session;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             IsLoggedIn = false;
-            throw new UserFriendlyException("Could not resume your active session for some reason.", ex.Message, ex);
+            throw;
         }
         finally
         {
@@ -53,6 +53,7 @@ public class SessionService(
 
     public async Task Logout(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await authService.Logout(cancellationToken);
+        IsLoggedIn = false;
     }
 }

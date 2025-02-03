@@ -1,9 +1,9 @@
 ﻿using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Desktop;
-using ModsDude.WindowsClient.Model.Exceptions;
+using Microsoft.Identity.Client.Extensions.Msal;
+using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Interfaces;
 using ModsDude.WindowsClient.Model.Models;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 namespace ModsDude.WindowsClient.Wpf.Auth;
 internal class AadB2CAuthService : IAuthService
 {
+    private const string _cacheFilename = "token_cache";
+
     private static readonly string _tenantName = "modsdude";
     private static readonly string _tenant = $"{_tenantName}.onmicrosoft.com";
     private static readonly string _azureAdB2CHostname = $"{_tenantName}.b2clogin.com";
@@ -26,6 +28,7 @@ internal class AadB2CAuthService : IAuthService
     private static readonly string _authorityResetPassword = $"{_authorityBase}{_policyResetPassword}";
 
     private IPublicClientApplication _publicClientApp;
+    private bool _tokenCacheConfigured = false;
 
 
     public AadB2CAuthService()
@@ -39,33 +42,27 @@ internal class AadB2CAuthService : IAuthService
 
     public async Task<Session> GetSession(CancellationToken cancellationToken)
     {
-        AuthenticationResult authResult;
+        if (!_tokenCacheConfigured)
+        {
+            await ConfigureTokenCacheAsync();
+        }
+
+        AuthenticationResult authResult;    
 
         var accounts = await _publicClientApp.GetAccountsAsync();
-        var firstAccount = accounts.FirstOrDefault();
 
         try
         {
-            authResult = await _publicClientApp.AcquireTokenSilent(_apiScopes, firstAccount)
+            authResult = await _publicClientApp.AcquireTokenSilent(_apiScopes, accounts.FirstOrDefault())
                 .ExecuteAsync(cancellationToken);
         }
         catch (MsalUiRequiredException)
         {
-            try
-            {
-                authResult = await _publicClientApp.AcquireTokenInteractive(_apiScopes)
-                    .WithAccount(accounts.FirstOrDefault())
-                    .WithPrompt(Prompt.SelectAccount)
-                    .ExecuteAsync(cancellationToken);
-            }
-            catch (MsalException msalex)
-            {
-                throw new UserFriendlyException("Something went wrong when signing you in.", msalex.Message, msalex);
-            }
-        }
-        catch (Exception ex)
-        {
-            throw new UserFriendlyException("Something went wrong when signing you in.", ex.Message, ex);
+            authResult = await _publicClientApp.AcquireTokenInteractive(_apiScopes)
+                .WithUseEmbeddedWebView(true)
+                .WithAccount(accounts.FirstOrDefault())
+                .WithPrompt(Prompt.SelectAccount)
+                .ExecuteAsync(cancellationToken);
         }
 
         return new()
@@ -73,5 +70,28 @@ internal class AadB2CAuthService : IAuthService
             AccessToken = authResult.AccessToken,
             UserId = authResult.UniqueId
         };
+    }
+
+    public async Task Logout(CancellationToken cancellationToken)
+    {
+        var accounts = await _publicClientApp.GetAccountsAsync();
+
+        if (accounts.Any())
+        {
+            await _publicClientApp.RemoveAsync(accounts.FirstOrDefault());
+        }
+    }
+
+    private async Task ConfigureTokenCacheAsync()
+    {
+        var storageProperties = new StorageCreationPropertiesBuilder("msal_cache.dat", FileSystemHelper.GetAppDataDirectory())
+            .WithMacKeyChain("ModsDudeTokenCache", "MSAL")
+            .WithLinuxUnprotectedFile()
+            .Build();
+
+        var cacheHelper = await MsalCacheHelper.CreateAsync(storageProperties);
+        cacheHelper.RegisterCache(_publicClientApp.UserTokenCache);
+
+        _tokenCacheConfigured = true;
     }
 }
