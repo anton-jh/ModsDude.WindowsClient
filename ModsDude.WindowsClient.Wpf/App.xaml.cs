@@ -47,7 +47,7 @@ public partial class App : Application
 
     private void MigrateDatabase()
     {
-        var dbContext = _serviceProvider.GetRequiredService<ApplicationDbContext>();
+        using var dbContext = _serviceProvider.GetRequiredService<ApplicationDbContext>();
 
         Directory.CreateDirectory(FileSystemHelper.GetDbDirectory());
 

@@ -64,7 +64,7 @@ internal class AadB2CAuthService : IAuthService
         catch (MsalUiRequiredException)
         {
             authResult = await _publicClientApp.AcquireTokenInteractive(_apiScopes)
-                    .ExecuteAsync(cancellationToken);
+                .ExecuteAsync(cancellationToken);
         }
 
         session.AccessToken = authResult.AccessToken;
