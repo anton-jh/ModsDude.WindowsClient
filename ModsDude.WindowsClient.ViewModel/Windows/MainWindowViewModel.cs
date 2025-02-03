@@ -30,9 +30,9 @@ public partial class MainWindowViewModel
 
 
     [RelayCommand]
-    public Task Logout()
+    public Task Logout(CancellationToken cancellationToken)
     {
-        return _sessionService.Logout();
+        return _sessionService.Logout(cancellationToken);
     }
 
 

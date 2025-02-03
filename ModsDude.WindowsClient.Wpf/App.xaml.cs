@@ -57,7 +57,7 @@ public partial class App : Application
     private async void InitSession()
     {
         var sessionService = _serviceProvider.GetRequiredService<SessionService>();
-        await sessionService.Init(default);
+        await sessionService.GetSession(default);
     }
 
     private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

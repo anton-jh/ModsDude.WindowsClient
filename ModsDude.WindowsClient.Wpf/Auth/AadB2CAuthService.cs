@@ -1,7 +1,10 @@
 ﻿using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Desktop;
+using ModsDude.WindowsClient.Model.Exceptions;
 using ModsDude.WindowsClient.Model.Interfaces;
 using ModsDude.WindowsClient.Model.Models;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,41 +37,41 @@ internal class AadB2CAuthService : IAuthService
             .Build();
     }
 
-
-    public async Task<Session> Login(CancellationToken cancellationToken)
+    public async Task<Session> GetSession(CancellationToken cancellationToken)
     {
-        var authResult = await _publicClientApp.AcquireTokenInteractive(_apiScopes)
-            .WithPrompt(Prompt.SelectAccount)
-            .WithB2CAuthority(_authorityResetPassword)
-            .ExecuteAsync(cancellationToken);
-
-        return new Session()
-        {
-            AccessToken = authResult.AccessToken,
-            Expires = authResult.ExpiresOn,
-            UserId = authResult.Account.Username,
-            RefreshToken = null!,
-        };
-    }
-
-    public async Task Refresh(Session session, CancellationToken cancellationToken)
-    {
-        var account = await _publicClientApp.GetAccountAsync(session.UserId);
         AuthenticationResult authResult;
+
+        var accounts = await _publicClientApp.GetAccountsAsync();
+        var firstAccount = accounts.FirstOrDefault();
 
         try
         {
-            authResult = await _publicClientApp.AcquireTokenSilent(_apiScopes, account)
+            authResult = await _publicClientApp.AcquireTokenSilent(_apiScopes, firstAccount)
                 .ExecuteAsync(cancellationToken);
         }
         catch (MsalUiRequiredException)
         {
-            authResult = await _publicClientApp.AcquireTokenInteractive(_apiScopes)
-                .ExecuteAsync(cancellationToken);
+            try
+            {
+                authResult = await _publicClientApp.AcquireTokenInteractive(_apiScopes)
+                    .WithAccount(accounts.FirstOrDefault())
+                    .WithPrompt(Prompt.SelectAccount)
+                    .ExecuteAsync(cancellationToken);
+            }
+            catch (MsalException msalex)
+            {
+                throw new UserFriendlyException("Something went wrong when signing you in.", msalex.Message, msalex);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new UserFriendlyException("Something went wrong when signing you in.", ex.Message, ex);
         }
 
-        session.AccessToken = authResult.AccessToken;
-        session.Expires = authResult.ExpiresOn;
-        session.UserId = authResult.Account.Username;
+        return new()
+        {
+            AccessToken = authResult.AccessToken,
+            UserId = authResult.UniqueId
+        };
     }
 }

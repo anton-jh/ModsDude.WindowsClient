@@ -11,7 +11,7 @@ public abstract class ModsDudeClientBase(
 
         msg.Headers.Authorization = new AuthenticationHeaderValue(
             "Bearer",
-            await sessionService.GetAccessToken(cancellationToken));
+            (await sessionService.GetSession(cancellationToken)).AccessToken);
 
         return msg;
     }

@@ -1,138 +1,58 @@
 ﻿using ModsDude.WindowsClient.Model.Exceptions;
-using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Interfaces;
 using ModsDude.WindowsClient.Model.Models;
-using System.Text.Json;
 
 namespace ModsDude.WindowsClient.Model.Services;
 public class SessionService(
-    IAuthService loginService)
+    IAuthService authService)
 {
-    private const string _sessionFilename = "session.json";
+    private readonly SemaphoreSlim _semaphore = new(1);
 
-    private Session? _session;
+    private bool _isLoggedIn = false;
 
 
     public event EventHandler<bool>? LoggedInChanged;
 
 
-    public bool IsLoggedIn => _session is not null;
-    public string UserId => _session?.UserId
-        ?? throw new InvalidOperationException("Not logged in");
-
-
-    public async Task<string> GetAccessToken(CancellationToken cancellationToken)
+    public bool IsLoggedIn
     {
-        if (_session is null)
+        get => _isLoggedIn;
+        private set
         {
-            throw new InvalidOperationException("Not logged in");
-        }
-
-        var refreshSuccess = await RefreshIfNeeded(_session, cancellationToken);
-        if (refreshSuccess)
-        {
-            return _session.AccessToken;
-        }
-
-        SetSession(null);
-        throw new UserFriendlyException(
-            "Something went wrong, try logging in again",
-            "Refresh failed");
-    }
-
-    public async Task Init(CancellationToken cancellationToken)
-    {
-        SetSession(LoadSession());
-
-        if (_session is not null)
-        {
-            var refreshSuccess = await RefreshIfNeeded(_session, cancellationToken);
-            if (refreshSuccess)
+            var wasLoggedIn = _isLoggedIn;
+            _isLoggedIn = value;
+            if (wasLoggedIn != _isLoggedIn)
             {
-                return;
+                LoggedInChanged?.Invoke(this, _isLoggedIn);
             }
         }
-
-        SetSession(await Login(cancellationToken));
     }
+    
 
-    public async Task Logout(bool triggerLogin = true, CancellationToken cancellationToken = default)
+    public async Task<Session> GetSession(CancellationToken cancellationToken)
     {
-        // await _authClient.LogoutAsync(cancellationToken: cancellationToken);
+        await _semaphore.WaitAsync(cancellationToken);
 
-        ClearSession();
-        SetSession(null);
-
-        if (triggerLogin)
+        try
         {
-            await Init(cancellationToken);
+            var session = await authService.GetSession(cancellationToken);
+            IsLoggedIn = true;
+
+            return session;
+        }
+        catch (Exception ex)
+        {
+            IsLoggedIn = false;
+            throw new UserFriendlyException("Could not resume your active session for some reason.", ex.Message, ex);
+        }
+        finally
+        {
+            _semaphore.Release();
         }
     }
 
-
-    private async Task<Session> Login(CancellationToken cancellationToken)
+    public async Task Logout(CancellationToken cancellationToken)
     {
-        var session = await loginService.Login(cancellationToken);
-        SaveSession(session);
-
-        return session;
-    }
-
-    private async Task<bool> RefreshIfNeeded(Session session, CancellationToken cancellationToken)
-    {
-        if (session.Expires > DateTimeOffset.Now.AddSeconds(10))
-        {
-            return true;
-        }
-
-        await loginService.Refresh(session, cancellationToken);
-        SaveSession(session);
-
-        // TODO: What if cannot refresh?
-
-        return true;
-    }
-
-    private void SetSession(Session? session)
-    {
-        var wasLoggedIn = IsLoggedIn;
-        _session = session;
-
-        if (wasLoggedIn != IsLoggedIn)
-        {
-            LoggedInChanged?.Invoke(this, IsLoggedIn);
-        }
-    }
-
-
-    private static Session? LoadSession()
-    {
-        var filepath = Path.Combine(FileSystemHelper.GetDbDirectory(), _sessionFilename);
-
-        if (File.Exists(filepath) == false)
-        {
-            return null;
-        }
-
-        var serializedSession = File.ReadAllText(filepath);
-
-        return JsonSerializer.Deserialize<Session>(serializedSession);
-    }
-
-    private static void SaveSession(Session session)
-    {
-        var filepath = Path.Combine(FileSystemHelper.GetDbDirectory(), _sessionFilename);
-        var serializedSession = JsonSerializer.Serialize(session);
-        
-        File.WriteAllText(filepath, serializedSession);
-    }
-
-    private static void ClearSession()
-    {
-        var filepath = Path.Combine(FileSystemHelper.GetDbDirectory(), _sessionFilename);
-        if (File.Exists(filepath))
-        {
-            File.Delete(filepath);
-        }
+        throw new NotImplementedException();
     }
 }

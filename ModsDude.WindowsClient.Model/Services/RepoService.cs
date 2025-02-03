@@ -16,9 +16,10 @@ public class RepoService(
 
     public async Task<IEnumerable<RepoModel>> GetRepos(CancellationToken cancellationToken)
     {
+        var session = await sessionService.GetSession(cancellationToken);
         var repos = await repoClient.GetMyReposV1Async(cancellationToken);
         var instances = await dbContext.LocalInstances
-            .Where(x => x.UserId == sessionService.UserId)
+            .Where(x => x.UserId == session.UserId)
             .ToListAsync(cancellationToken);
 
         var combinedRepos = repos.Select(x => new RepoModel()
