@@ -45,32 +45,12 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            
+
             <Button Grid.Column="0"
                     Content="Save changes" Command="{Binding Path=SaveChangesCommand}" />
             <Button Grid.Column="2"
                     Content="Delete repo" Command="{Binding Path=DeleteRepoCommand}" />
         </Grid>
-
-        <GroupBox Grid.Column="0" Grid.Row="1"
-                  Header="Mods">
-            <DockPanel>
-                <CheckBox DockPanel.Dock="Top"
-                          Content="Use mods feature" IsChecked="{Binding Path=UseModsFeature, Mode=OneTime}" IsEnabled="False"/>
-                <TextBox DockPanel.Dock="Top" 
-                         Text="{Binding Path=ModsScript, Mode=OneTime}" IsReadOnly="True" />
-            </DockPanel>
-        </GroupBox>
-
-        <GroupBox Grid.Column="1" Grid.Row="1"
-                  Header="Savegames">
-            <DockPanel>
-                <CheckBox DockPanel.Dock="Top"
-                          Content="Use savegames feature" IsChecked="{Binding Path=UseSavegamesFeature, Mode=OneTime}" IsEnabled="False"/>
-                <TextBox DockPanel.Dock="Top" 
-                         Text="{Binding Path=SavegamesScript, Mode=OneTime}" IsReadOnly="True" />
-            </DockPanel>
-        </GroupBox>
 
     </Grid>
 </Page>

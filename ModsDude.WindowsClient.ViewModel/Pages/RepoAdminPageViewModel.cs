@@ -13,9 +13,6 @@ public partial class RepoAdminPageViewModel(
     private string _name = repo.Name;
 
 
-    // TODO Adapter id and configuration. Probably as a GameAdapter class or something
-
-
     [RelayCommand]
     private async Task SaveChanges(CancellationToken cancellationToken)
     {

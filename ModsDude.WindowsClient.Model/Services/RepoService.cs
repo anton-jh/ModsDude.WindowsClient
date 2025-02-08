@@ -3,6 +3,7 @@ using ModsDude.WindowsClient.ApiClient.Generated;
 using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Exceptions;
 using ModsDude.WindowsClient.Model.Models;
+using System.Text.Json;
 
 namespace ModsDude.WindowsClient.Model.Services;
 public class RepoService(
@@ -34,15 +35,17 @@ public class RepoService(
         return combinedRepos;
     }
 
-    public async Task CreateRepo(string name, string adapterId, string adapterConfiguration, CancellationToken cancellationToken)
+    public async Task CreateRepo(string name, string adapterId, object adapterConfiguration, CancellationToken cancellationToken)
     {
         RepoDto repo;
+
+        var serializedAdapterConfiguration = JsonSerializer.Serialize(adapterConfiguration);
 
         var request = new CreateRepoRequest()
         {
             Name = name,
             AdapterId = adapterId,
-            AdapterConfiguration = adapterConfiguration,
+            AdapterConfiguration = serializedAdapterConfiguration,
         };
         try
         {
