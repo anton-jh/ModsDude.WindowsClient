@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModsDude.WindowsClient.Model.DbContexts;
 using ModsDude.WindowsClient.Model.Exceptions;
+using ModsDude.WindowsClient.Model.GameAdapters;
 using ModsDude.WindowsClient.Model.Helpers;
 using ModsDude.WindowsClient.Model.Interfaces;
 using ModsDude.WindowsClient.Model.ModsDudeServer;
@@ -99,6 +100,8 @@ public partial class App : Application
         services.AddSingleton<ProfileService>();
 
         services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Transient);
+
+        services.AddGameAdapters(typeof(IGameAdapter).Assembly);
 
         services.AddModsDudeClient();
     }
