@@ -10,6 +10,7 @@ public partial class CreateRepoPageViewModel(
     : PageViewModel
 {
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
     private string _name = "New repo";
 
     [ObservableProperty]
@@ -31,9 +32,14 @@ public partial class CreateRepoPageViewModel(
     [RelayCommand(CanExecute = nameof(IsValid))]
     private async Task Submit(CancellationToken cancellationToken)
     {
+        if (SelectedGameAdapter is null)
+        {
+            return;
+        }
+
         await repoService.CreateRepo(
             Name,
-            "",
+            SelectedGameAdapter.Value.Id.ToString(),
             "",
             cancellationToken);
     }

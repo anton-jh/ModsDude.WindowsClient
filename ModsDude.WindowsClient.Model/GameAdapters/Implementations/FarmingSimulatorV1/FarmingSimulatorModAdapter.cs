@@ -1,5 +1,5 @@
 ﻿namespace ModsDude.WindowsClient.Model.GameAdapters.Implementations.FarmingSimulatorV1;
-internal class FarmingSimulatorModAdapter : IModAdapter
+public class FarmingSimulatorModAdapter : IModAdapter<FarmingSimulatorBaseConfig, FarmingSimulatorInstanceConfig>
 {
 
 }

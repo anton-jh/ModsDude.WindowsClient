@@ -3,18 +3,32 @@
 public interface IGameAdapter
 {
     GameAdapterDescriptor Descriptor { get; }
-    IModAdapter? ModAdapter { get; }
-    ISavegameAdapter? SavegameAdapter { get; }
-    bool HasModAdapter => ModAdapter is not null;
-    bool HasSavegameAdapter => SavegameAdapter is not null;
+    bool HasModAdapter { get; }
+    bool HasSavegameAdapter { get; }
 }
 
-public interface IModAdapter
+public abstract class GameAdapterBase<TBaseConfig, TInstanceConfig> : IGameAdapter
+{
+    public abstract GameAdapterDescriptor Descriptor { get; }
+
+    public bool HasModAdapter => ModAdapter is not null;
+
+    public bool HasSavegameAdapter => SavegameAdapter is not null;
+
+    public abstract IModAdapter<TBaseConfig, TInstanceConfig>? ModAdapter { get; }
+    public abstract ISavegameAdapter<TBaseConfig, TInstanceConfig>? SavegameAdapter { get; }
+}
+
+public interface IModAdapter;
+
+public interface IModAdapter<TBaseConfig, TInstanceConfig> : IModAdapter
 {
 
 }
 
-public interface ISavegameAdapter
+public interface ISavegameAdapter;
+
+public interface ISavegameAdapter<TBaseConfig, TInstanceConfig> : ISavegameAdapter
 {
 
 }
