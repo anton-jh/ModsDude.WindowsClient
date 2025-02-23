@@ -5,8 +5,8 @@ public interface IGameAdapter
     GameAdapterDescriptor Descriptor { get; }
     bool HasModAdapter { get; }
     bool HasSavegameAdapter { get; }
-    object GetBaseConfigurationTemplate { get; }
-    object GetInstanceConfigurationTemplate { get; }
+    object GetBaseConfigurationTemplate();
+    object GetInstanceConfigurationTemplate();
 }
 
 public abstract class GameAdapterBase<TBaseConfig, TInstanceConfig> : IGameAdapter
@@ -19,8 +19,8 @@ public abstract class GameAdapterBase<TBaseConfig, TInstanceConfig> : IGameAdapt
 
     public abstract IModAdapter<TBaseConfig, TInstanceConfig>? ModAdapter { get; }
     public abstract ISavegameAdapter<TBaseConfig, TInstanceConfig>? SavegameAdapter { get; }
-    public abstract object GetBaseConfigurationTemplate { get; }
-    public abstract object GetInstanceConfigurationTemplate { get; }
+    public abstract object GetBaseConfigurationTemplate();
+    public abstract object GetInstanceConfigurationTemplate();
 }
 
 public interface IModAdapter<TBaseConfig, TInstanceConfig>

@@ -2,11 +2,15 @@
 using CommunityToolkit.Mvvm.Input;
 using ModsDude.WindowsClient.Model.GameAdapters;
 using ModsDude.WindowsClient.Model.Services;
+using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
+using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Collections.ObjectModel;
 
 namespace ModsDude.WindowsClient.ViewModel.Pages;
 public partial class CreateRepoPageViewModel(
-    RepoService repoService)
+    RepoService repoService,
+    GameAdapterRegistry gameAdapterRegistry,
+    DynamicFormViewModelFactory dynamicFormViewModelFactory)
     : PageViewModel
 {
     [ObservableProperty]
@@ -15,31 +19,37 @@ public partial class CreateRepoPageViewModel(
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
-    private GameAdapterDescriptor? _selectedGameAdapter;
+    [NotifyPropertyChangedFor(nameof(SelectedGameAdapter))]
+    [NotifyPropertyChangedFor(nameof(AdapterConfigForm))]
+    private GameAdapterDescriptor? _selectedGameAdapterDescriptor;
 
+
+    public IGameAdapter? SelectedGameAdapter => SelectedGameAdapterDescriptor is not null
+        ? gameAdapterRegistry.Get(SelectedGameAdapterDescriptor.Value.Id)
+        : null;
+
+    public DynamicFormViewModel? AdapterConfigForm => SelectedGameAdapter is not null
+        ? dynamicFormViewModelFactory.Create(SelectedGameAdapter.GetBaseConfigurationTemplate())
+        : null;
 
     public bool IsValid =>
         !string.IsNullOrEmpty(Name) &&
-        SelectedGameAdapter is not null;
+        SelectedGameAdapterDescriptor is not null;
 
-    public ObservableCollection<GameAdapterDescriptor> AvailableGameAdapters { get; } =
-    [
-        new(new("fs", "1"), "Farming Simulator", [], "Description longo"),
-        new(new("beam", "1"), "BeamNG.Drive - BeamMP", [], "Description longo dos")
-    ];
+    public ObservableCollection<GameAdapterDescriptor> AvailableGameAdapters { get; } = [.. gameAdapterRegistry.Descriptors];
 
 
     [RelayCommand(CanExecute = nameof(IsValid))]
     private async Task Submit(CancellationToken cancellationToken)
     {
-        if (SelectedGameAdapter is null)
+        if (SelectedGameAdapterDescriptor is null)
         {
             return;
         }
 
         await repoService.CreateRepo(
             Name,
-            SelectedGameAdapter.Value.Id.ToString(),
+            SelectedGameAdapterDescriptor.Value.Id.ToString(),
             "",
             cancellationToken);
     }

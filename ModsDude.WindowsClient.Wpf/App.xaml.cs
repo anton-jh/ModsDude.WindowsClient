@@ -93,6 +93,7 @@ public partial class App : Application
         services.AddFactory<NewRepoItemViewModel>();
         services.AddTransient<RepoAdminPageViewModelFactory>();
         services.AddTransient<RepoPageViewModelFactory>();
+        services.AddSingleton<DynamicFormViewModelFactory>();
 
         services.AddSingleton<IAuthService, AadB2CAuthService>();
         services.AddSingleton<SessionService>();

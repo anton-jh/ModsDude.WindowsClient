@@ -35,7 +35,7 @@
                    Content="Adapter" />
             <ComboBox MinWidth="200"
                       ItemsSource="{Binding Path=AvailableGameAdapters}"
-                      SelectedValue="{Binding Path=SelectedGameAdapter}">
+                      SelectedValue="{Binding Path=SelectedGameAdapterDescriptor}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Path=DisplayName}" />
@@ -45,9 +45,13 @@
 
         </StackPanel>
 
+        <ListView Grid.Column="0" Grid.Row="1"
+                  ItemsSource="{Binding AdapterConfigForm.Inputs}"
+                  ItemTemplateSelector="{StaticResource FormInputDataTemplateSelector}" />
+
         <Button Grid.Column="1" Grid.Row="0"
-                Content="Save" Command="{Binding Path=SubmitCommand}"
-                Width="100" />
+            Content="Save" Command="{Binding Path=SubmitCommand}"
+            Width="100" />
 
     </Grid>
 </Page>

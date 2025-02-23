@@ -1,7 +1,7 @@
 ﻿using ModsDude.WindowsClient.Model.Exceptions;
 
 namespace ModsDude.WindowsClient.Model.GameAdapters;
-internal class GameAdapterRegistry(IEnumerable<IGameAdapter> gameAdapters)
+public class GameAdapterRegistry(IEnumerable<IGameAdapter> gameAdapters)
 {
     private readonly Dictionary<GameAdapterId, IGameAdapter> _byId =
         gameAdapters.ToDictionary(x => x.Descriptor.Id);

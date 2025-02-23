@@ -3,7 +3,7 @@ using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ModsDude.WindowsClient.Wpf.DynamicForms;
+namespace ModsDude.WindowsClient.Wpf.TemplateSelectors;
 public class FormInputDataTemplateSelector : DataTemplateSelector
 {
     public required DataTemplate DirectoryPathTemplate { get; set; }

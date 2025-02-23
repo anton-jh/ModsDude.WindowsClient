@@ -4,6 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModsDude.WindowsClient.Wpf"
+        xmlns:beh="clr-namespace:ModsDude.WindowsClient.Wpf.Behaviours"
+        xmlns:conv="clr-namespace:ModsDude.WindowsClient.Wpf.Converters"
+        xmlns:temp="clr-namespace:ModsDude.WindowsClient.Wpf.TemplateSelectors"
+        xmlns:vm="clr-namespace:ModsDude.WindowsClient.ViewModel.ViewModels;assembly=ModsDude.WindowsClient.ViewModel"
         xmlns:wvm="clr-namespace:ModsDude.WindowsClient.ViewModel.Windows;assembly=ModsDude.WindowsClient.ViewModel"
         xmlns:pvm="clr-namespace:ModsDude.WindowsClient.ViewModel.Pages;assembly=ModsDude.WindowsClient.ViewModel"
         xmlns:p="clr-namespace:ModsDude.WindowsClient.Wpf.Pages"
@@ -12,27 +16,6 @@
         Title="MainWindow" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
         FontSize="14">
-
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type pvm:CreateRepoPageViewModel}">
-            <p:CreateRepoPage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type pvm:LoginPageViewModel}">
-            <p:LoginPage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type pvm:MainPageViewModel}">
-            <p:MainPage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type pvm:RepoPageViewModel}">
-            <p:RepoPage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type pvm:ExamplePageViewModel}">
-            <p:ExamplePage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type pvm:RepoAdminPageViewModel}">
-            <p:RepoAdminPage />
-        </DataTemplate>
-    </Window.Resources>
 
 
 

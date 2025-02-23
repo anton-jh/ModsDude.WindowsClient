@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Forms;
 
-namespace ModsDude.WindowsClient.Wpf.DynamicForms
+namespace ModsDude.WindowsClient.Wpf.Behaviours
 {
     public static class FolderBrowserBehavior
     {
