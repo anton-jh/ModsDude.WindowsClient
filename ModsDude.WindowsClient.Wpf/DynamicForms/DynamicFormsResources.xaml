@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:ModsDude.WindowsClient.ViewModel.ViewModels;assembly=ModsDude.WindowsClient.ViewModel"
+                    xmlns:local="clr-namespace:ModsDude.WindowsClient.Wpf.DynamicForms">
+
+    <local:DirectoryPathToStringConverter x:Key="DirectoryPathToStringConverter" />
+
+    <DataTemplate x:Key="DirectoryPathTemplate" DataType="{x:Type vm:IInputViewModel}">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                   Content="{Binding Path=Value}"/>
+
+            <TextBox Grid.Column="0" Grid.Row="1"
+                     x:Name="FolderPathTextBox"
+                     VerticalAlignment="Center" Margin="0,0,5,0" />
+
+            <Button Grid.Column="1" Grid.Row="1"
+                    Content="Browse..."
+                    local:FolderBrowserBehavior.FolderPathTarget="{Binding Value, Converter={StaticResource DirectoryPathToStringConverter}}"
+                    VerticalAlignment="Center" />
+        </Grid>
+    </DataTemplate>
+    
+</ResourceDictionary>

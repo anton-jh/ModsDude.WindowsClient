@@ -11,4 +11,8 @@ public class FarmingSimulatorGameAdapter : GameAdapterBase<FarmingSimulatorBaseC
     public override IModAdapter<FarmingSimulatorBaseConfig, FarmingSimulatorInstanceConfig>? ModAdapter { get; } = new FarmingSimulatorModAdapter();
 
     public override ISavegameAdapter<FarmingSimulatorBaseConfig, FarmingSimulatorInstanceConfig>? SavegameAdapter { get; } = new FarmingSimulatorSavegameAdapter();
+
+    public override object GetBaseConfigurationTemplate => new FarmingSimulatorBaseConfig();
+
+    public override object GetInstanceConfigurationTemplate => new FarmingSimulatorInstanceConfig();
 }
