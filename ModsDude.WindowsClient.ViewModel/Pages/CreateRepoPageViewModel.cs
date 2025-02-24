@@ -2,15 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using ModsDude.WindowsClient.Model.GameAdapters;
 using ModsDude.WindowsClient.Model.Services;
-using ModsDude.WindowsClient.ViewModel.ViewModelFactories;
-using ModsDude.WindowsClient.ViewModel.ViewModels;
 using System.Collections.ObjectModel;
 
 namespace ModsDude.WindowsClient.ViewModel.Pages;
 public partial class CreateRepoPageViewModel(
     RepoService repoService,
-    GameAdapterRegistry gameAdapterRegistry,
-    DynamicFormViewModelFactory dynamicFormViewModelFactory)
+    GameAdapterRegistry gameAdapterRegistry)
     : PageViewModel
 {
     [ObservableProperty]
@@ -20,7 +17,7 @@ public partial class CreateRepoPageViewModel(
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
     [NotifyPropertyChangedFor(nameof(SelectedGameAdapter))]
-    [NotifyPropertyChangedFor(nameof(AdapterConfigForm))]
+    [NotifyPropertyChangedFor(nameof(AdapterConfigurationModel))]
     private GameAdapterDescriptor? _selectedGameAdapterDescriptor;
 
 
@@ -28,9 +25,7 @@ public partial class CreateRepoPageViewModel(
         ? gameAdapterRegistry.Get(SelectedGameAdapterDescriptor.Value.Id)
         : null;
 
-    public DynamicFormViewModel? AdapterConfigForm => SelectedGameAdapter is not null
-        ? dynamicFormViewModelFactory.Create(SelectedGameAdapter.GetBaseConfigurationTemplate())
-        : null;
+    public object? AdapterConfigurationModel => SelectedGameAdapter?.GetBaseConfigurationTemplate();
 
     public bool IsValid =>
         !string.IsNullOrEmpty(Name) &&
